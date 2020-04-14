@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 Auth.post('/picture', upload.single('picture'), AuthController.register)
-
 Auth.post('/register', AuthController.register)
 Auth.get('/activate', AuthController.verify)
 Auth.post('/login', AuthController.login)
