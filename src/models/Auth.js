@@ -140,33 +140,21 @@ module.exports = {
       })
     })
   },
-  forgotPassword: async function (uuid, newPassword) {
+  setNewSecurity: async function (id, newCode) {
     const table = 'users'
-    const query = `SELECT COUNT (*) AS total FROM ${table} WHERE verification_code ='${uuid}' AND is_active=1 AND is_verified=1`
-    console.log(query)
-    const checkUser = new Promise(function (resolve, reject) {
+    const query = `UPDATE ${table} SET security_code='${newCode}' WHERE id='${id}'`
+    return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
-          resolve(results[0].total)
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
         }
       })
     })
-    if (await checkUser) {
-      return new Promise(function (resolve, reject) {
-        db.query(`UPDATE ${table} SET password='${newPassword}' WHERE verification_code='${uuid}'`, function (err, results, fields) {
-          if (err) {
-            reject(err)
-          } else {
-            if (results.affectedRows) {
-              resolve(true)
-            } else {
-              resolve(false)
-            }
-          }
-        })
-      })
-    }
   }
 }
