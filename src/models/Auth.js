@@ -1,10 +1,10 @@
 const db = require('../utils/db')
 
 module.exports = {
-  checkUsername: function (username) {
+  checkPhone: function (phone) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT COUNT (*) AS total FROM ${table} WHERE username ='${username}'`
+      const query = `SELECT COUNT (*) AS total FROM ${table} WHERE phone ='${phone}'`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
@@ -14,10 +14,27 @@ module.exports = {
       })
     })
   },
-  getUserByUsername: function (username) {
+  getUserByPhone: function (phone) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT * FROM ${table} WHERE username = '${username}'`
+      const query = `SELECT * FROM ${table} WHERE phone = '${phone}'`
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getUserById: function (id) {
+    const table = 'users'
+    return new Promise(function (resolve, reject) {
+      const query = `SELECT * FROM ${table} WHERE id = '${id}'`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
@@ -49,10 +66,10 @@ module.exports = {
       })
     })
   },
-  getVerificationCode: async function (username) {
+  getVerificationCode: async function (phone) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT verification_code FROM ${table} WHERE username = '${username}'`
+      const query = `SELECT verification_code FROM ${table} WHERE phone = '${phone}'`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
@@ -66,10 +83,11 @@ module.exports = {
       })
     })
   },
-  verifyUser: async function (username, code) {
+  verifyUser: async function (phone, code) {
     const table = 'users'
-    const checkUser = await this.checkUsername(username)
-    const query = `UPDATE ${table} SET verification_code=${null}, is_verified = 1, is_active=1 WHERE username='${username}' AND verification_code = '${code}'`
+    const checkUser = await this.checkPhone(phone)
+    console.log(checkUser)
+    const query = `UPDATE ${table} SET verification_code=${null}, is_verified = 1, is_active=1 WHERE phone='${phone}' AND verification_code = '${code}'`
     return new Promise(function (resolve, reject) {
       if (!checkUser) {
         resolve(false)
