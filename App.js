@@ -11,7 +11,9 @@ app.use(bodyParser.json()) // for json
 app.use(cors('*'))
 
 // const AuthRouter = require('./src/routes/Auth')
+const MigrateRouter = require('./src/routes/migrations')
 
+app.use('/migrate', MigrateRouter)
 // app.use('/auth', AuthRouter) // first register here
 
 app.listen(process.env.PORT, () => {
