@@ -144,58 +144,38 @@ module.exports = {
       res.send(data)
     }
   },
-  forgetPass: async function (req, res) {
-    const { username } = req.body
-    const { code } = req.query
-    console.log(code)
-    if (!code) {
-      const user = await AuthModel.checkUsername(username)
-      if (user) {
-        const info = await AuthModel.getUserByUsername(username)
-        const generate = await AuthModel.createVerificationCode(info.id, uuid())
-        const code = await AuthModel.getVerificationCode(username)
-        if (generate) {
-          const data = {
-            success: true,
-            msg: 'Verification code has been sent to email',
-            code
-          }
-          res.send(data)
-        } else {
-          const data = {
-            success: false,
-            msg: 'Failed to generate verification code'
-          }
-          res.send(data)
-        }
-      } else {
-        const data = {
-          success: false,
-          msg: 'Username not found'
-        }
-        res.send(data)
+  forgotSecurity: async function (req, res) {
+    const { id } = req.params
+    const user = await AuthModel.getUserById(id)
+    if (!user) {
+      const data = {
+        succes: false,
+        msg: `Internal params error, id ${id} Not Found`
       }
+      res.send(data)
     } else {
-      const { password } = req.body
-      if (password === req.body.confirm_password) {
-        const encrypPass = bcrypt.hashSync(password)
-        if (await AuthModel.forgotPassword(code, encrypPass)) {
+      const { oldCode } = req.body
+      const checkPass = await bcrypt.compareSync(oldCode, user.security_code)
+      if (checkPass) {
+        const { newCode } = req.body
+        const encrypPass = bcrypt.hashSync(newCode)
+        if (await AuthModel.setNewSecurity(id, encrypPass)) {
           const data = {
             success: true,
-            msg: 'Your password has been reset'
+            msg: 'Your Security Code has been reset'
           }
           res.send(data)
         } else {
           const data = {
             success: false,
-            msg: 'failed to reset password'
+            msg: 'failed to reset Security Code, Old Code didn\'t match'
           }
           res.send(data)
         }
       } else {
         const data = {
           success: false,
-          msg: 'Confirm password not match'
+          msg: 'Secuirity Code not match'
         }
         res.send(data)
       }
