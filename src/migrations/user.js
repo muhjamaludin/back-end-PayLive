@@ -11,8 +11,8 @@ const check = function (err, results, fields) {
 db.query(
   `CREATE TABLE IF NOT EXISTS users(
   id INT PRIMARY KEY AUTO_INCREMENT,
-  phone INT(14) NOT NULL,
-  security_code VARCHAR(60) NOT NULL,
+  phone VARCHAR(14) NOT NULL,
+  security_code VARCHAR(60),
   verification_code VARCHAR(37),
   is_active TINYINT(2) DEFAULT 0,
   is_verified TINYINT(2) DEFAULT 0,
@@ -25,11 +25,12 @@ db.query(
 db.query(`
   CREATE TABLE IF NOT EXISTS user_details(
     id INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT(5) NOT NULL,
     fullname VARCHAR(30) NOT NULL,
     email VARCHAR(20) NOT NULL,
     profil_picture TEXT,
     identity_picture TEXT,
-    balance INT(8) NOT NULL,
+    balance INT(8) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
   )
