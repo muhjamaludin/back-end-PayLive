@@ -12,7 +12,7 @@ db.query(
   `CREATE TABLE IF NOT EXISTS users(
   id INT PRIMARY KEY AUTO_INCREMENT,
   phone INT(14) NOT NULL,
-  password VARCHAR(60) NOT NULL,
+  security_code VARCHAR(60) NOT NULL,
   verification_code VARCHAR(37),
   is_active TINYINT(2) DEFAULT 0,
   is_verified TINYINT(2) DEFAULT 0,
