@@ -1,5 +1,5 @@
 const Migrate = require('express').Router()
-const MigrateController = require('../controllers/migrations')
+const MigrateController = require('../controllers/Migrations')
 
 Migrate.get('/', MigrateController.migration)
 
