@@ -5,7 +5,7 @@ module.exports = {
     page = page || 1
     perPage = perPage || 5
     sort = sort || { key: 'id', value: '' }
-    search = search || { key: 'username', value: '' }
+    search = search || { key: 'phone', value: '' }
     const table = 'users'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}
@@ -23,7 +23,7 @@ module.exports = {
   },
   getTotalUsers: function (conditions = {}) {
     let { search } = conditions
-    search = search || { key: 'username', value: '' }
+    search = search || { key: 'phone', value: '' }
     const table = 'users'
     return new Promise(function (resolve, reject) {
       const query = `SELECT COUNT (*) AS total FROM ${table}
@@ -33,21 +33,6 @@ module.exports = {
           reject(err)
         } else {
           resolve(results[0].total)
-        }
-      })
-    })
-  },
-  createAdmin: function (username, password, roleId) {
-    const table = 'users'
-    roleId = 1
-    const image = 'http://google.com'
-    return new Promise(function (resolve, reject) {
-      const query = `INSERT INTO ${table} (picture, username, password, role_id, is_active, is_verified) VALUES ('${image}','${username}','${password}', ${roleId}, 1, 1)`
-      db.query(query, function (err, results, fields) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(results.insertId)
         }
       })
     })
@@ -85,11 +70,46 @@ module.exports = {
       })
     })
   },
-  updateUser: function (id, picture, username, password) {
+  updateUser: function (id, phone) {
     const table = 'users'
-    picture = typeof picture === 'string' ? `'${picture}'` : picture
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET picture =${picture}, username='${username}', password='${password}' WHERE id=${id}`
+      const query = `UPDATE ${table} SET phone='${phone}' WHERE id=${id}`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(results.affectedRows)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  updateUserDetails: function (idUser, fullname, email) {
+    const table = 'user_details'
+    return new Promise(function (resolve, reject) {
+      const query = `UPDATE ${table} SET fullname='${fullname}', email='${email}' WHERE id_user=${idUser}`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(results.affectedRows)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  topupBalance: function (idUser, balance) {
+    const table = 'user_details'
+    return new Promise(function (resolve, reject) {
+      const query = `UPDATE ${table} SET balance='${balance}' WHERE id_user=${idUser}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -122,6 +142,24 @@ module.exports = {
       })
     })
   },
+  deleteUserDetail: function (id) {
+    const table = 'user_detail'
+    return new Promise(function (resolve, reject) {
+      const query = ` DELETE FROM ${table} WHERE id_user= ${id}`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
   getUserById: function (id) {
     const table = 'users'
     const query = `SELECT * FROM ${table} WHERE id=${id}`
@@ -135,42 +173,6 @@ module.exports = {
           } else {
             resolve(false)
           }
-        }
-      })
-    })
-  },
-  getAllSchedules: function (conditions = {}) {
-    let { page, perPage, sort, search } = conditions
-    page = page || 1
-    perPage = perPage || 5
-    sort = sort || { key: 'id', value: 1 } // value => 0 untuk descending, 1 ascending
-    search = search || { key: 'name', value: '' }
-    const query = `SELECT schedules.id, busses.car_name, busses.bus_seat, routes.start, routes.end, schedules.price, schedules.departure_time, schedules.arrive_time, schedules.departure_date
-                  FROM ((schedules
-                  INNER JOIN routes ON schedules.id_route = routes.id)
-                  INNER JOIN busses ON schedules.id_bus = busses.id)  WHERE ${search.key} LIKE '${search.value}%'
-                  ORDER BY ${sort.key} ${sort.value ? 'ASC' : 'DESC'} 
-                   LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
-    return new Promise(function (resolve, reject) {
-      db.query(query, function (err, results, fields) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(results)
-        }
-      })
-    })
-  },
-  Transaction: function (idSchedule, idUser) {
-    const table = 'transactions'
-    const query = `INSERT INTO ${table} (id_user,id_schedule) VALUES (${idUser},${idSchedule})`
-    console.log(query)
-    return new Promise(function (resolve, reject) {
-      db.query(query, function (err, results, fields) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(results.insertId)
         }
       })
     })
