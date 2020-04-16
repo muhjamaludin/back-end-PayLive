@@ -39,23 +39,27 @@ module.exports = {
     res.send(data)
   },
   create: async function (req, res) {
-    const { id } = req.params
-    const { fullname, phone, email } = req.body
-    const idUser = id
-    console.log(idUser, fullname, email, phone)
-    const results = await UserModel.updateUser(id, phone)
-    await UserModel.updateUserDetails(idUser, fullname, email)
-    if (results) {
-      const data = {
-        success: true,
-        msg: `User with phone ${phone} has been updated!`,
-        data: { id, ...req.body }
+    const { name } = req.body
+    const typeName = typeof name
+    if (typeName !== 'undefined') {
+      const results = await UserModel.createCashPoint(name)
+      if (results) {
+        const data = {
+          success: true,
+          msg: `cash method ${name} success to add`
+        }
+        res.send(data)
+      } else {
+        const data = {
+          success: false,
+          msg: 'Sorry you cannot add this featureS'
+        }
+        res.send(data)
       }
-      res.send(data)
     } else {
       const data = {
-        success: false,
-        msg: 'There is no data can be updated'
+        succes: false,
+        msg: 'Name of your input unknown'
       }
       res.send(data)
     }

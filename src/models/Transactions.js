@@ -70,6 +70,24 @@ module.exports = {
       })
     })
   },
+  createCashPoint: function (name) {
+    const table = 'cash_points'
+    return new Promise(function (resolve, reject) {
+      const query = `INSERT INTO ${table} (name) VALUES ('${name}')`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(results.affectedRows)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
   updateUser: function (id, phone) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
