@@ -11,14 +11,15 @@ Transactions.patch('/point/:id', CashPointControllers.update) // update cash poi
 Transactions.delete('/point/:id', CashPointControllers.delete) // delete cash point
 
 // category
-Transactions.get('/nominal', NominalControllers.read)
-Transactions.get('/nominal/:id', NominalControllers.readById)
+Transactions.get('/category', CategoryControllers.read)
+Transactions.get('/category/:id', CategoryControllers.readById)
 Transactions.post('/category', CategoryControllers.create)
-Transactions.patch('/nominal/:id', NominalControllers.update)
-Transactions.delete('/nominal/:id', NominalControllers.delete)
+Transactions.patch('/nominal/:id', CategoryControllers.update)
+Transactions.delete('/nominal/:id', CategoryControllers.delete)
 
 // nominal
 Transactions.get('/nominal', NominalControllers.read)
+Transactions.get('/nominal/:id', NominalControllers.readById)
 Transactions.post('/nominal', NominalControllers.create)
 Transactions.patch('/nominal/:id', NominalControllers.update)
 Transactions.delete('/nominal/:id', NominalControllers.delete)

@@ -2,7 +2,7 @@ const CashModel = require('../models/Category')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await CashModel.getAllCash()
+    const results = await CashModel.getAllCategory()
     const data = {
       success: true,
       data: results
@@ -12,7 +12,7 @@ module.exports = {
   readById: async function (req, res) {
     const data = {
       success: true,
-      data: await CashModel.getCashById(req.params.id)
+      data: await CashModel.getCategoryById(req.params.id)
     }
     res.send(data)
   },
