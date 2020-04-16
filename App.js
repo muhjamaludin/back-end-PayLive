@@ -14,12 +14,12 @@ app.use(cors('*'))
 // source router
 const AuthRouter = require('./src/routes/Auth')
 const MigrateRouter = require('./src/routes/Migrations')
-// const UserRouter = require('./src/routes/User')
+const UserRouter = require('./src/routes/Users')
 
 // endpoint
 app.use('/migrate', MigrateRouter) // migrate database
 app.use('/auth', AuthRouter) // authentication
-// app.use('/user', UserRouter) // user
+app.use('/user', UserRouter) // user
 
 // base url & PORT
 app.listen(process.env.PORT, () => {
