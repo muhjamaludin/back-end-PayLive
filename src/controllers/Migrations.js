@@ -5,6 +5,7 @@ module.exports = {
     require('../migrations/Topup')
     require('../migrations/Transactions')
     require('../migrations/User')
+    require('../migrations/Vouchers')
     const data = {
       success: true,
       msg: 'Data has been migrated'
