@@ -2,39 +2,17 @@ const UserModel = require('../models/Transactions')
 
 module.exports = {
   read: async function (req, res) {
-    let { page, limit, search, sort } = req.query
-    page = parseInt(page) || 1
-    limit = parseInt(limit) || 5
-
-    let key = search && Object.keys(search)[0]
-    let value = search && Object.values(search)[0]
-    search = (search && { key, value }) || { key: 'phone', value: '' }
-
-    key = sort && Object.keys(sort)[0]
-    value = sort && Object.values(sort)[0]
-    sort = (sort && { key, value }) || { key: 'id', value: 1 }
-    const conditions = { page, perPage: limit, search, sort }
-
-    const results = await UserModel.getAllUsers(conditions)
-    conditions.totalData = await UserModel.getTotalUsers(conditions)
-    conditions.totalPage = Math.ceil(conditions.totalData / conditions.perPage)
-    conditions.nextLink = (page >= conditions.totalPage ? null : process.env.APP_URI.concat(`users?page=${page + 1}`))
-    conditions.prevLink = (page <= 1 ? null : process.env.APP_URI.concat(`users?page=${page - 1}`))
-    delete conditions.search
-    delete conditions.sort
-    delete conditions.limit
-
+    const results = await UserModel.getAllCashPoint()
     const data = {
       success: true,
-      data: results,
-      pageInfo: conditions
+      data: results
     }
     res.send(data)
   },
-  getUser: async function (req, res) {
+  readById: async function (req, res) {
     const data = {
       success: true,
-      data: await UserModel.getUserById(req.params.id)
+      data: await UserModel.getCashById(req.params.id)
     }
     res.send(data)
   },

@@ -1,17 +1,9 @@
 const db = require('../utils/db')
 module.exports = {
-  getAllUsers: function (conditions = {}) {
-    let { page, perPage, sort, search } = conditions
-    page = page || 1
-    perPage = perPage || 5
-    sort = sort || { key: 'id', value: '' }
-    search = search || { key: 'phone', value: '' }
-    const table = 'users'
+  getAllCashPoint: function () {
+    const table = 'cash_points'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT * FROM ${table}
-                    WHERE ${search.key} LIKE '${search.value}%'
-                    ORDER BY ${sort.key} ${sort.value ? 'ASC' : 'DESC'} 
-                    LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
+      const query = `SELECT * FROM ${table}`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
@@ -21,18 +13,19 @@ module.exports = {
       })
     })
   },
-  getTotalUsers: function (conditions = {}) {
-    let { search } = conditions
-    search = search || { key: 'phone', value: '' }
-    const table = 'users'
+  getCashById: function (id) {
+    const table = 'cash_points'
+    const query = `SELECT * FROM ${table} WHERE id=${id}`
     return new Promise(function (resolve, reject) {
-      const query = `SELECT COUNT (*) AS total FROM ${table}
-                    WHERE ${search.key} LIKE '${search.value}%'`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
-          resolve(results[0].total)
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
         }
       })
     })
@@ -171,23 +164,6 @@ module.exports = {
         } else {
           if (results.affectedRows) {
             resolve(true)
-          } else {
-            resolve(false)
-          }
-        }
-      })
-    })
-  },
-  getUserById: function (id) {
-    const table = 'users'
-    const query = `SELECT * FROM ${table} WHERE id=${id}`
-    return new Promise(function (resolve, reject) {
-      db.query(query, function (err, results, fields) {
-        if (err) {
-          reject(err)
-        } else {
-          if (results.length) {
-            resolve(results[0])
           } else {
             resolve(false)
           }
