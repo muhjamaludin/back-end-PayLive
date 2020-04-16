@@ -30,7 +30,7 @@ module.exports = {
       } else {
         const data = {
           success: false,
-          msg: 'Sorry you cannot add this featureS'
+          msg: 'Sorry you cannot add this feature'
         }
         res.send(data)
       }

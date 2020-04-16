@@ -1,6 +1,6 @@
 const db = require('../utils/db')
 module.exports = {
-  getAllCategory: function () {
+  getAllPaySistem: function () {
     const table = 'category'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}`
@@ -13,7 +13,7 @@ module.exports = {
       })
     })
   },
-  getCategoryById: function (id) {
+  getById: function (id) {
     const table = 'category'
     const query = `SELECT * FROM ${table} WHERE id=${id}`
     return new Promise(function (resolve, reject) {
