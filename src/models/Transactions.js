@@ -66,8 +66,8 @@ module.exports = {
       })
     })
   },
-  deleteUser: function (id) {
-    const table = 'users'
+  deleteCash: function (id) {
+    const table = 'cash_points'
     return new Promise(function (resolve, reject) {
       const query = ` DELETE FROM ${table} WHERE id= ${id}`
       console.log(query)
