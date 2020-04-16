@@ -21,29 +21,38 @@ module.exports = {
         }
         res.send(data)
       } else {
-        const results = await UserModel.createUser(phone)
-        const info = await AuthModel.getUserByPhone(phone)
-        await UserdModel.createUserDetail(info.id, fullname, email)
-        if (results) {
-          if (await AuthModel.createVerificationCode(results, uuid())) {
-            const code = await AuthModel.getVerificationCode(phone)
-            const data = {
-              success: true,
-              msg: `register for phone number ${phone} success \n waiting for verify`,
-              code
+        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        if (email.match(mailformat)) {
+          const results = await UserModel.createUser(phone)
+          const info = await AuthModel.getUserByPhone(phone)
+          await UserdModel.createUserDetail(info.id, fullname, email)
+          if (results) {
+            if (await AuthModel.createVerificationCode(results, uuid())) {
+              const code = await AuthModel.getVerificationCode(phone)
+              const data = {
+                success: true,
+                msg: `register for phone number ${phone} success \n waiting for verify`,
+                code
+              }
+              res.send(data)
+            } else {
+              const data = {
+                success: false,
+                msg: 'Verification code couldn\'t be generate'
+              }
+              res.send(data)
             }
-            res.send(data)
           } else {
             const data = {
               success: false,
-              msg: 'Verification code couldn\'t be generate'
+              msg: 'register failed'
             }
             res.send(data)
           }
         } else {
           const data = {
-            success: false,
-            msg: 'register failed'
+            succes: false,
+            msg: 'email not valid'
           }
           res.send(data)
         }
