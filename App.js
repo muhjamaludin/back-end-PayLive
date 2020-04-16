@@ -16,12 +16,14 @@ const AuthRouter = require('./src/routes/Auth')
 const MigrateRouter = require('./src/routes/Migrations')
 const UserRouter = require('./src/routes/Users')
 const TransactionRouter = require('./src/routes/Transaction')
+const PromoRouter = require('./src/routes/Promo')
 
 // endpoint
 app.use('/migrate', MigrateRouter) // migrate database
 app.use('/auth', AuthRouter) // authentication
 app.use('/user', UserRouter) // user
-app.use('/transaction', TransactionRouter)
+app.use('/transaction', TransactionRouter) // transaction
+app.use('/promo', PromoRouter)
 
 // base url & PORT
 app.listen(process.env.PORT, () => {
