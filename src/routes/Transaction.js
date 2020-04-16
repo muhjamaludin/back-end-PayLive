@@ -3,6 +3,7 @@ const CashPointControllers = require('../controllers/CashPoint')
 const NominalControllers = require('../controllers/Nominal')
 const CategoryControllers = require('../controllers/Category')
 const PaySistemControllers = require('../controllers/PaySistem')
+const TransactionControllers = require('../controllers/Transaction')
 
 // cash points
 Transactions.get('/point', CashPointControllers.read) // get all cash point
@@ -31,5 +32,8 @@ Transactions.get('/nominal/:id', NominalControllers.readById)
 Transactions.post('/nominal', NominalControllers.create)
 Transactions.patch('/nominal/:id', NominalControllers.update)
 Transactions.delete('/nominal/:id', NominalControllers.delete)
+
+// Transaction
+Transactions.post('/pay', TransactionControllers.create)
 
 module.exports = Transactions
