@@ -107,40 +107,48 @@ module.exports = {
   securityCheck: async function (req, res) {
     const { id } = req.params
     const { securityCode } = req.body
-    console.log(id, securityCode)
-    const info = await AuthModel.getUserById(id)
-    const checkPass = await bcrypt.compareSync(securityCode, info.security_code)
-    if (checkPass) {
-      if (await AuthModel.checkVerifiedUser) {
-        if (await AuthModel.checkActivatedUser) {
-          const payload = { id: info.id, securityCode, roleId: info.role_id }
-          const options = { expiresIn: '30m' }
-          const key = process.env.APP_KEY
-          const token = jwt.sign(payload, key, options)
-          const data = {
-            success: true,
-            token,
-            msg: 'Let\'s go Home with token'
+    const valid = securityCode.length === 6
+    if (valid) {
+      const info = await AuthModel.getUserById(id)
+      const checkPass = await bcrypt.compareSync(securityCode, info.security_code)
+      if (checkPass) {
+        if (await AuthModel.checkVerifiedUser) {
+          if (await AuthModel.checkActivatedUser) {
+            const payload = { id: info.id, securityCode, roleId: info.role_id }
+            const options = { expiresIn: '30m' }
+            const key = process.env.APP_KEY
+            const token = jwt.sign(payload, key, options)
+            const data = {
+              success: true,
+              token,
+              msg: 'Let\'s go Home with token'
+            }
+            res.send(data)
+          } else {
+            const data = {
+              success: false,
+              msg: 'Phone not active'
+            }
+            res.send(data)
           }
-          res.send(data)
         } else {
           const data = {
             success: false,
-            msg: 'Phone not active'
+            msg: 'Phone not verified'
           }
           res.send(data)
         }
       } else {
         const data = {
           success: false,
-          msg: 'Phone not verified'
+          msg: 'Wrong Security Code'
         }
         res.send(data)
       }
     } else {
       const data = {
-        success: false,
-        msg: 'Wrong Security Code'
+        succes: false,
+        msg: 'Security Code mush have 6 numbers'
       }
       res.send(data)
     }
