@@ -2,7 +2,7 @@ const UserModel = require('../models/Transactions')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await UserModel.getAllCashPoint()
+    const results = await UserModel.getAllCash()
     const data = {
       success: true,
       data: results
@@ -20,7 +20,7 @@ module.exports = {
     const { name } = req.body
     const typeName = typeof name
     if (typeName !== 'undefined') {
-      const results = await UserModel.createCashPoint(name)
+      const results = await UserModel.createCash(name)
       if (results) {
         const data = {
           success: true,
@@ -44,24 +44,29 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { fullname, phone, email } = req.body
-    const idUser = id
-    console.log(idUser, fullname, email, phone)
-    const results = await UserModel.updateUser(id, phone)
-    await UserModel.updateUserDetails(idUser, fullname, email)
-    if (results) {
+    const { name } = req.body
+    if (name.length > 9) {
       const data = {
-        success: true,
-        msg: `User with phone ${phone} has been updated!`,
-        data: { id, ...req.body }
+        succes: false,
+        msg: 'your input too long, please input under 10 character'
       }
       res.send(data)
     } else {
-      const data = {
-        success: false,
-        msg: 'There is no data can be updated'
+      const results = await UserModel.updateCash(id, name)
+      if (results) {
+        const data = {
+          success: true,
+          msg: `Name ${name} has been updated!`,
+          data: { id, ...req.body }
+        }
+        res.send(data)
+      } else {
+        const data = {
+          success: false,
+          msg: 'There is no data can be updated'
+        }
+        res.send(data)
       }
-      res.send(data)
     }
   },
   delete: async function (req, res) {
@@ -79,24 +84,6 @@ module.exports = {
       const data = {
         success: false,
         msg: 'There is no data can be deleted'
-      }
-      res.send(data)
-    }
-  },
-  topup: async function (req, res) {
-    const { idUser } = req.params
-    const { balance } = req.body
-    const result = await UserModel.topupBalance(idUser, balance)
-    if (result) {
-      const data = {
-        succes: true,
-        msg: `Your balance has been added with ${balance} rupiah`
-      }
-      res.send(data)
-    } else {
-      const data = {
-        succes: false,
-        msg: 'failed topup'
       }
       res.send(data)
     }

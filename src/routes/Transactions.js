@@ -5,8 +5,7 @@ const TransactionControllers = require('../controllers/Transactions')
 Transactions.get('/point', TransactionControllers.read)
 Transactions.get('/point/:id', TransactionControllers.readById)
 Transactions.post('/point', TransactionControllers.create)
-Transactions.patch('/:id', TransactionControllers.update)
-Transactions.delete('/:id', TransactionControllers.delete)
-Transactions.patch('/topup/:idUser', TransactionControllers.topup)
+Transactions.patch('/point/:id', TransactionControllers.update)
+Transactions.delete('/point/:id', TransactionControllers.delete)
 
 module.exports = Transactions
