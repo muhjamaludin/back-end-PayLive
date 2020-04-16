@@ -69,10 +69,11 @@ module.exports = {
       })
     })
   },
-  updateNominal: function (id, idMenu, idPaySistem, nominal) {
-    const table = 'nominals'
+  updateVoucher: function (idUser, name, picture, nominal) {
+    const table = 'vouchers'
+    picture = (typeof picture === 'string' ? `'${picture}'` : picture)
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET id_menu=${idMenu}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
+      const query = `UPDATE ${table} SET name='${name}', image=${picture}, nominal=${nominal} WHERE id_user=${idUser}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {

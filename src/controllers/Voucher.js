@@ -58,36 +58,16 @@ module.exports = {
     }
   },
   update: async function (req, res) {
-    const { id } = req.params
-    const { fullname, phone, email } = req.body
-    const idUser = id
-    console.log(idUser, fullname, email, phone)
-    const results = await UserModel.updateUser(id, phone)
-    await UserModel.updateUserDetails(idUser, fullname, email)
-    if (results) {
-      const data = {
-        success: true,
-        msg: `User with phone ${phone} has been updated!`,
-        data: { id, ...req.body }
-      }
-      res.send(data)
-    } else {
-      const data = {
-        success: false,
-        msg: 'There is no data can be updated'
-      }
-      res.send(data)
-    }
-  },
-  uploadPhoto: async function (req, res) {
     const { idUser } = req.params
+    const { name, nominal } = req.body
     const picture = (req.file && req.file.filename) || null
-    const results = await UserModel.updateUserDetails(idUser, picture)
+    console.log(idUser, name, nominal, picture)
+    const results = await VoucherModel.updateVoucher(idUser, name, picture, nominal)
     if (results) {
       const data = {
         success: true,
-        msg: `Photo for id ${idUser} has been updated!`,
-        data: { idUser, ...req.file }
+        msg: `Voucher with name ${name} has been updated!`,
+        data: { idUser, ...req.body }
       }
       res.send(data)
     } else {
@@ -113,24 +93,6 @@ module.exports = {
       const data = {
         success: false,
         msg: 'There is no data can be deleted'
-      }
-      res.send(data)
-    }
-  },
-  topup: async function (req, res) {
-    const { idUser } = req.params
-    const { balance } = req.body
-    const result = await UserModel.topupBalance(idUser, balance)
-    if (result) {
-      const data = {
-        succes: true,
-        msg: `Your balance has been added with ${balance} rupiah`
-      }
-      res.send(data)
-    } else {
-      const data = {
-        succes: false,
-        msg: 'failed topup'
       }
       res.send(data)
     }

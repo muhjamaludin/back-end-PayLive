@@ -12,7 +12,7 @@ const upload = multer({ storage })
 Vouchers.get('/', VoucherControllers.read)
 Vouchers.get('/:id', VoucherControllers.getVoucher)
 Vouchers.post('/', upload.single('picture'), VoucherControllers.create)
-Vouchers.patch('/:id', VoucherControllers.update)
+Vouchers.patch('/:idUser', upload.single('picture'), VoucherControllers.update)
 Vouchers.delete('/:id', VoucherControllers.delete)
 
 module.exports = Vouchers
