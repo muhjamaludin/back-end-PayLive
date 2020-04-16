@@ -37,12 +37,12 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idMenu, idPaySistem, nominal } = req.body
-    const results = await TransactionModel.updateNominal(id, idMenu, idPaySistem, nominal)
+    const { idMenu, idPaySistem, idNominal, price } = req.body
+    const results = await TransactionModel.updatePrice(id, idMenu, idPaySistem, idNominal, price)
     if (results) {
       const data = {
         success: true,
-        msg: `Nonimal id menu = ${idMenu} and idPaySistem = ${idPaySistem} has been updated!`,
+        msg: `Total price with id menu = ${idMenu} and idPaySistem = ${idPaySistem} has been updated!`,
         data: { id, ...req.body }
       }
       res.send(data)
@@ -56,7 +56,7 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await TransactionModel.deleteNominal(id)
+    const results = await TransactionModel.deletePrice(id)
     if (results) {
       const data = {
         success: true,

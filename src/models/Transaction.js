@@ -44,10 +44,10 @@ module.exports = {
       })
     })
   },
-  updateNominal: function (id, idMenu, idPaySistem, nominal) {
-    const table = 'nominals'
+  updatePrice: function (id, idMenu, idPaySistem, idNominal, price) {
+    const table = 'transactions'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET id_menu=${idMenu}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
+      const query = `UPDATE ${table} SET id_menu=${idMenu}, pay_sistem_id=${idPaySistem}, nominal_id=${idNominal}, price=${price} WHERE id=${id}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -62,8 +62,8 @@ module.exports = {
       })
     })
   },
-  deleteNominal: function (id) {
-    const table = 'nominals'
+  deletePrice: function (id) {
+    const table = 'transactions'
     return new Promise(function (resolve, reject) {
       const query = ` DELETE FROM ${table} WHERE id= ${id}`
       console.log(query)
