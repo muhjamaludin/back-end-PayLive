@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 Vouchers.get('/', VoucherControllers.read)
-Vouchers.get('/:id', VoucherControllers.getUser)
+Vouchers.get('/:id', VoucherControllers.getVoucher)
 Vouchers.post('/', upload.single('picture'), VoucherControllers.create)
 Vouchers.patch('/:id', VoucherControllers.update)
 Vouchers.delete('/:id', VoucherControllers.delete)

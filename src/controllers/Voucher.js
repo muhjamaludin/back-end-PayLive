@@ -8,18 +8,18 @@ module.exports = {
 
     let key = search && Object.keys(search)[0]
     let value = search && Object.values(search)[0]
-    search = (search && { key, value }) || { key: 'phone', value: '' }
+    search = (search && { key, value }) || { key: 'name', value: '' }
 
     key = sort && Object.keys(sort)[0]
     value = sort && Object.values(sort)[0]
     sort = (sort && { key, value }) || { key: 'id', value: 1 }
     const conditions = { page, perPage: limit, search, sort }
 
-    const results = await UserModel.getAllUsers(conditions)
-    conditions.totalData = await UserModel.getTotalUsers(conditions)
+    const results = await VoucherModel.getAllVouchers(conditions)
+    conditions.totalData = await VoucherModel.getTotalVouchers(conditions)
     conditions.totalPage = Math.ceil(conditions.totalData / conditions.perPage)
-    conditions.nextLink = (page >= conditions.totalPage ? null : process.env.APP_URI.concat(`users?page=${page + 1}`))
-    conditions.prevLink = (page <= 1 ? null : process.env.APP_URI.concat(`users?page=${page - 1}`))
+    conditions.nextLink = (page >= conditions.totalPage ? null : process.env.APP_URI.concat(`promo?page=${page + 1}`))
+    conditions.prevLink = (page <= 1 ? null : process.env.APP_URI.concat(`promo?page=${page - 1}`))
     delete conditions.search
     delete conditions.sort
     delete conditions.limit
@@ -31,10 +31,10 @@ module.exports = {
     }
     res.send(data)
   },
-  getUser: async function (req, res) {
+  getVoucher: async function (req, res) {
     const data = {
       success: true,
-      data: await UserModel.getUserById(req.params.id)
+      data: await VoucherModel.getVoucherById(req.params.id)
     }
     res.send(data)
   },
