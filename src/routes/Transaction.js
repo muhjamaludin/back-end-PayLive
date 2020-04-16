@@ -20,7 +20,7 @@ Transactions.delete('/category/:id', CategoryControllers.delete)
 
 // pay sistem
 Transactions.get('/paysistem', PaySistemControllers.read)
-Transactions.get('/paysistem', PaySistemControllers.readById)
+Transactions.get('/paysistem/:id', PaySistemControllers.readById)
 Transactions.post('/paysistem', PaySistemControllers.create)
 
 // nominal

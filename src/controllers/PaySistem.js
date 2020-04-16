@@ -2,7 +2,7 @@ const PaySistemModel = require('../models/PaySistem')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await CategoryModel.getAllCategory()
+    const results = await PaySistemModel.getAllPaySistem()
     const data = {
       success: true,
       data: results
@@ -12,7 +12,7 @@ module.exports = {
   readById: async function (req, res) {
     const data = {
       success: true,
-      data: await CategoryModel.getCategoryById(req.params.id)
+      data: await PaySistemModel.getById(req.params.id)
     }
     res.send(data)
   },
