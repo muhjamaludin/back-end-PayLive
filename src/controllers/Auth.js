@@ -21,7 +21,7 @@ module.exports = {
         }
         res.send(data)
       } else {
-        const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+        const mailformat = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
         if (email.match(mailformat)) {
           const results = await UserModel.createUser(phone)
           const info = await AuthModel.getUserByPhone(phone)
@@ -68,13 +68,22 @@ module.exports = {
   madeSecurity: async function (req, res) {
     const { securityCode } = req.body
     const id = req.params.id
-    const encrypPass = bcrypt.hashSync(securityCode)
-    console.log(id, securityCode)
-    const results = await UserModel.createSecurityCode(id, encrypPass)
-    if (results) {
+    const valid = securityCode.length === 6
+    if (valid) {
+      const encrypPass = bcrypt.hashSync(securityCode)
+      console.log(id, securityCode)
+      const results = await UserModel.createSecurityCode(id, encrypPass)
+      if (results) {
+        const data = {
+          succes: true,
+          msg: 'security_code has been created, You can go home now'
+        }
+        res.send(data)
+      }
+    } else {
       const data = {
-        succes: true,
-        msg: 'security_code has been created, You can go home now'
+        succes: false,
+        msg: 'Security Code mush have 6 numbers'
       }
       res.send(data)
     }
@@ -138,17 +147,26 @@ module.exports = {
   },
   signIn: async function (req, res) {
     const { phone } = req.body
-    const checkUser = await AuthModel.checkPhone(phone)
-    if (!checkUser) {
-      const data = {
-        success: false,
-        msg: 'Your phone number is not registered'
+    const valid = phone.length > 10 && phone.length < 13
+    if (valid) {
+      const checkUser = await AuthModel.checkPhone(phone)
+      if (!checkUser) {
+        const data = {
+          success: false,
+          msg: 'Your phone number is not registered'
+        }
+        res.send(data)
+      } else {
+        const data = {
+          succes: true,
+          msg: 'Phone available, Please Verify and insert your security code to enjoy the feature'
+        }
+        res.send(data)
       }
-      res.send(data)
     } else {
       const data = {
-        succes: true,
-        msg: 'Phone available, Please Verify and insert your security code to enjoy the feature'
+        succes: false,
+        msg: 'Phone number is not valid'
       }
       res.send(data)
     }
