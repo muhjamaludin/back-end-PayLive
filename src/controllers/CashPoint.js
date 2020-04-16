@@ -1,8 +1,8 @@
-const UserModel = require('../models/Transactions')
+const CashModel = require('../models/CashPoint')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await UserModel.getAllCash()
+    const results = await CashModel.getAllCash()
     const data = {
       success: true,
       data: results
@@ -12,7 +12,7 @@ module.exports = {
   readById: async function (req, res) {
     const data = {
       success: true,
-      data: await UserModel.getCashById(req.params.id)
+      data: await CashModel.getCashById(req.params.id)
     }
     res.send(data)
   },
@@ -20,7 +20,7 @@ module.exports = {
     const { name } = req.body
     const typeName = typeof name
     if (typeName !== 'undefined') {
-      const results = await UserModel.createCash(name)
+      const results = await CashModel.createCash(name)
       if (results) {
         const data = {
           success: true,
@@ -52,7 +52,7 @@ module.exports = {
       }
       res.send(data)
     } else {
-      const results = await UserModel.updateCash(id, name)
+      const results = await CashModel.updateCash(id, name)
       if (results) {
         const data = {
           success: true,
@@ -71,7 +71,7 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await UserModel.deleteCash(id)
+    const results = await CashModel.deleteCash(id)
     if (results) {
       const data = {
         success: true,
