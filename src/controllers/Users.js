@@ -62,6 +62,7 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
+    console.log(id)
     const results = await UserModel.deleteUser(id)
     await UserModel.deleteUserDetail(id)
     if (results) {

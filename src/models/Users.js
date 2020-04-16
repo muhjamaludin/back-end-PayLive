@@ -143,7 +143,7 @@ module.exports = {
     })
   },
   deleteUserDetail: function (id) {
-    const table = 'user_detail'
+    const table = 'user_details'
     return new Promise(function (resolve, reject) {
       const query = ` DELETE FROM ${table} WHERE id_user= ${id}`
       console.log(query)
