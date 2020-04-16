@@ -12,6 +12,8 @@ Transactions.delete('/point/:id', TransactionControllers.delete) // delete cash 
 // nominal
 Transactions.get('/nominal', NominalControllers.read)
 Transactions.post('/nominal', NominalControllers.create)
+Transactions.patch('/nominal/:id', NominalControllers.update)
+Transactions.delete('/nominal/:id', NominalControllers.delete)
 
 // menu
 

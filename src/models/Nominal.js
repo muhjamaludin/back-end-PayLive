@@ -1,7 +1,7 @@
 const db = require('../utils/db')
 module.exports = {
-  getAllCash: function () {
-    const table = 'nominal'
+  getAllNominal: function () {
+    const table = 'nominals'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}`
       db.query(query, function (err, results, fields) {
@@ -31,10 +31,10 @@ module.exports = {
       })
     })
   },
-  updateCash: function (id, name) {
-    const table = 'cash_points'
+  updateNominal: function (id, idMenu, idPaySistem, nominal) {
+    const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET name='${name}' WHERE id=${id}`
+      const query = `UPDATE ${table} SET id_menu=${idMenu}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
