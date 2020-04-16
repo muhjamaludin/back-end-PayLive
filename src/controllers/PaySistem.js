@@ -71,11 +71,11 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await CategoryModel.deleteCategory(id)
+    const results = await PaySistemModel.deletePaySistems(id)
     if (results) {
       const data = {
         success: true,
-        msg: `Category name with id ${id} has been deleted!`
+        msg: `Pay Sistem with id ${id} has been deleted!`
       }
       res.send(data)
     } else {
