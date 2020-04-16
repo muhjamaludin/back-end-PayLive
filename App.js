@@ -15,7 +15,7 @@ app.use(cors('*'))
 const AuthRouter = require('./src/routes/Auth')
 const MigrateRouter = require('./src/routes/Migrations')
 const UserRouter = require('./src/routes/Users')
-const TransactionRouter = require('./src/routes/Transactions')
+const TransactionRouter = require('./src/routes/Transaction')
 
 // endpoint
 app.use('/migrate', MigrateRouter) // migrate database
