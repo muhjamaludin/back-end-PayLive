@@ -14,7 +14,7 @@ Transactions.delete('/point/:id', CashPointControllers.delete) // delete cash po
 Transactions.get('/category', CategoryControllers.read)
 Transactions.get('/category/:id', CategoryControllers.readById)
 Transactions.post('/category', CategoryControllers.create)
-Transactions.patch('/nominal/:id', CategoryControllers.update)
+Transactions.patch('/category/:id', CategoryControllers.update)
 Transactions.delete('/nominal/:id', CategoryControllers.delete)
 
 // nominal

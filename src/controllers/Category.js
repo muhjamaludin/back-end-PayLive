@@ -1,8 +1,8 @@
-const CashModel = require('../models/Category')
+const CategoryModel = require('../models/Category')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await CashModel.getAllCategory()
+    const results = await CategoryModel.getAllCategory()
     const data = {
       success: true,
       data: results
@@ -12,7 +12,7 @@ module.exports = {
   readById: async function (req, res) {
     const data = {
       success: true,
-      data: await CashModel.getCategoryById(req.params.id)
+      data: await CategoryModel.getCategoryById(req.params.id)
     }
     res.send(data)
   },
@@ -20,7 +20,7 @@ module.exports = {
     const { name } = req.body
     const typeName = typeof name
     if (typeName !== 'undefined') {
-      const results = await CashModel.createCategory(name)
+      const results = await CategoryModel.createCategory(name)
       if (results) {
         const data = {
           success: true,
@@ -45,14 +45,14 @@ module.exports = {
   update: async function (req, res) {
     const { id } = req.params
     const { name } = req.body
-    if (name.length > 9) {
+    if (name.length > 60) {
       const data = {
         succes: false,
         msg: 'your input too long, please input under 10 character'
       }
       res.send(data)
     } else {
-      const results = await CashModel.updateCash(id, name)
+      const results = await CategoryModel.updateCategory(id, name)
       if (results) {
         const data = {
           success: true,
@@ -71,7 +71,7 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await CashModel.deleteCash(id)
+    const results = await CategoryModel.deleteCash(id)
     if (results) {
       const data = {
         success: true,

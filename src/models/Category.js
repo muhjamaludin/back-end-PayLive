@@ -48,8 +48,8 @@ module.exports = {
       })
     })
   },
-  updateCash: function (id, name) {
-    const table = 'cash_points'
+  updateCategory: function (id, name) {
+    const table = 'category'
     return new Promise(function (resolve, reject) {
       const query = `UPDATE ${table} SET name='${name}' WHERE id=${id}`
       console.log(query)
