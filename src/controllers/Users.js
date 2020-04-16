@@ -60,6 +60,25 @@ module.exports = {
       res.send(data)
     }
   },
+  uploadPhoto: async function (req, res) {
+    const { idUser } = req.params
+    const picture = (req.file && req.file.filename) || null
+    const results = await UserModel.updateUserDetails(idUser, picture)
+    if (results) {
+      const data = {
+        success: true,
+        msg: `Photo for id ${idUser} has been updated!`,
+        data: { idUser, ...req.file }
+      }
+      res.send(data)
+    } else {
+      const data = {
+        success: false,
+        msg: 'There is no data can be updated'
+      }
+      res.send(data)
+    }
+  },
   delete: async function (req, res) {
     const { id } = req.params
     console.log(id)

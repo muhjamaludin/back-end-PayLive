@@ -88,10 +88,11 @@ module.exports = {
       })
     })
   },
-  updateUserDetails: function (idUser, fullname, email) {
+  updateUserDetails: function (idUser, picture) {
+    picture = (typeof picture === 'string' ? `'${picture}'` : picture)
     const table = 'user_details'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET fullname='${fullname}', email='${email}' WHERE id_user=${idUser}`
+      const query = `UPDATE ${table} SET profile_picture=${picture} WHERE id_user=${idUser}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
