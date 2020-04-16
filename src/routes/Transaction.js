@@ -15,7 +15,7 @@ Transactions.get('/category', CategoryControllers.read)
 Transactions.get('/category/:id', CategoryControllers.readById)
 Transactions.post('/category', CategoryControllers.create)
 Transactions.patch('/category/:id', CategoryControllers.update)
-Transactions.delete('/nominal/:id', CategoryControllers.delete)
+Transactions.delete('/category/:id', CategoryControllers.delete)
 
 // nominal
 Transactions.get('/nominal', NominalControllers.read)

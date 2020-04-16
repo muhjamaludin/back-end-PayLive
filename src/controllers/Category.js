@@ -71,11 +71,11 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await CategoryModel.deleteCash(id)
+    const results = await CategoryModel.deleteCategory(id)
     if (results) {
       const data = {
         success: true,
-        msg: `Cash_point name with id ${id} has been deleted!`
+        msg: `Category name with id ${id} has been deleted!`
       }
       res.send(data)
     } else {
