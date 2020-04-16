@@ -2,7 +2,7 @@ const TransactionModel = require('../models/Transaction')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await TransactionModel.getAllNominal()
+    const results = await TransactionModel.getAllPrice()
     const data = {
       success: true,
       data: results

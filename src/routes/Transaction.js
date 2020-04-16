@@ -35,5 +35,7 @@ Transactions.delete('/nominal/:id', NominalControllers.delete)
 
 // Transaction
 Transactions.post('/pay', TransactionControllers.create)
+Transactions.get('/pay', TransactionControllers.read)
+Transactions.get('/pay/:id', TransactionControllers.readById)
 
 module.exports = Transactions

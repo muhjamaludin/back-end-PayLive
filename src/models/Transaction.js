@@ -1,7 +1,7 @@
 const db = require('../utils/db')
 module.exports = {
-  getAllNominal: function () {
-    const table = 'nominals'
+  getAllPrice: function () {
+    const table = 'transactions'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}`
       db.query(query, function (err, results, fields) {
@@ -14,7 +14,7 @@ module.exports = {
     })
   },
   getById: function (id) {
-    const table = 'nominals'
+    const table = 'transactions'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table} where id=${id}`
       db.query(query, function (err, results, fields) {
