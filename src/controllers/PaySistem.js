@@ -44,7 +44,7 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { name } = req.body
+    const { idMenu, name } = req.body
     if (name.length > 60) {
       const data = {
         succes: false,
@@ -52,11 +52,11 @@ module.exports = {
       }
       res.send(data)
     } else {
-      const results = await CategoryModel.updateCategory(id, name)
+      const results = await PaySistemModel.updatePaySistem(idMenu, name)
       if (results) {
         const data = {
           success: true,
-          msg: `Name ${name} has been updated!`,
+          msg: `Name pay sistem ${name} has been updated!`,
           data: { id, ...req.body }
         }
         res.send(data)

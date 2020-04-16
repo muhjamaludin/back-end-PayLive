@@ -48,10 +48,10 @@ module.exports = {
       })
     })
   },
-  updateCategory: function (id, name) {
-    const table = 'category'
+  updatePaySistem: function (idMenu, name) {
+    const table = 'pay_sistems'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET name='${name}' WHERE id=${id}`
+      const query = `UPDATE ${table} SET name='${name}' WHERE id_menu=${idMenu}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {

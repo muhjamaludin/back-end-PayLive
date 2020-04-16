@@ -22,6 +22,8 @@ Transactions.delete('/category/:id', CategoryControllers.delete)
 Transactions.get('/paysistem', PaySistemControllers.read)
 Transactions.get('/paysistem/:id', PaySistemControllers.readById)
 Transactions.post('/paysistem', PaySistemControllers.create)
+Transactions.patch('/paysistem/:id', PaySistemControllers.update)
+Transactions.delete('/paysistem/:id', PaySistemControllers.delete)
 
 // nominal
 Transactions.get('/nominal', NominalControllers.read)
