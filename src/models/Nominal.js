@@ -13,6 +13,19 @@ module.exports = {
       })
     })
   },
+  getById: function (id) {
+    const table = 'nominals'
+    return new Promise(function (resolve, reject) {
+      const query = `SELECT * FROM ${table} where id=${id}`
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+        }
+      })
+    })
+  },
   createNominal: function (idMenu, idPaySistem, nominal) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
@@ -49,8 +62,8 @@ module.exports = {
       })
     })
   },
-  deleteCash: function (id) {
-    const table = 'cash_points'
+  deleteNominal: function (id) {
+    const table = 'nominals'
     return new Promise(function (resolve, reject) {
       const query = ` DELETE FROM ${table} WHERE id= ${id}`
       console.log(query)

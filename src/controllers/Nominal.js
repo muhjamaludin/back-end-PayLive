@@ -1,17 +1,26 @@
-const UserModel = require('../models/Nominal')
+const NominalModel = require('../models/Nominal')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await UserModel.getAllNominal()
+    const results = await NominalModel.getAllNominal()
     const data = {
       success: true,
       data: results
     }
     res.send(data)
   },
+  readById: async function (req, res) {
+    const { id } = req.params
+    const results = await NominalModel.getById(id)
+    const data = {
+      success: false,
+      data: results
+    }
+    res.send(data)
+  },
   create: async function (req, res) {
     const { idMenu, idPaySistem, nominal } = req.body
-    const results = await UserModel.createNominal(idMenu, idPaySistem, nominal)
+    const results = await NominalModel.createNominal(idMenu, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,
@@ -29,7 +38,7 @@ module.exports = {
   update: async function (req, res) {
     const { id } = req.params
     const { idMenu, idPaySistem, nominal } = req.body
-    const results = await UserModel.updateNominal(id, idMenu, idPaySistem, nominal)
+    const results = await NominalModel.updateNominal(id, idMenu, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,
@@ -47,7 +56,7 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await UserModel.deleteCash(id)
+    const results = await NominalModel.deleteNominal(id)
     if (results) {
       const data = {
         success: true,
