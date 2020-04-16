@@ -88,10 +88,10 @@ module.exports = {
       })
     })
   },
-  deleteNominal: function (id) {
-    const table = 'nominals'
+  deleteVoucher: function (id) {
+    const table = 'vouchers'
     return new Promise(function (resolve, reject) {
-      const query = ` DELETE FROM ${table} WHERE id= ${id}`
+      const query = ` DELETE FROM ${table} WHERE id_user= ${id}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {

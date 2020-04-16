@@ -80,13 +80,11 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    console.log(id)
-    const results = await UserModel.deleteUser(id)
-    await UserModel.deleteUserDetail(id)
+    const results = await VoucherModel.deleteVoucher(id)
     if (results) {
       const data = {
         success: true,
-        msg: `Users with id ${id} has been deleted!`
+        msg: `Voucher with id user ${id} has been deleted!`
       }
       res.send(data)
     } else {
