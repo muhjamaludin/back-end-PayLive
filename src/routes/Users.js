@@ -1,5 +1,6 @@
 const Users = require('express').Router()
 const UserControllers = require('../controllers/Users')
+const TransactionControllers = require('../controllers/Transaction')
 const upload = require('../helpers/multer')
 
 Users.get('/', UserControllers.read) // get all user for Admin
@@ -10,5 +11,6 @@ Users.patch('/upload/:idUser', upload.single('picture'), UserControllers.uploadP
 
 Users.patch('/topup/:idUser', UserControllers.topup) // topu-up balance
 Users.get('/balance/:id', UserControllers.getCash)
+Users.get('/price/:idUser', TransactionControllers.totalPrice)
 
 module.exports = Users

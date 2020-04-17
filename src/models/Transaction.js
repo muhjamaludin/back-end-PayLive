@@ -79,8 +79,26 @@ module.exports = {
         }
       })
     })
+  },
+  totalTransaction: function (idNominal) {
+    const table = 'nominals'
+    const join = 'transactions'
+    return new Promise(function (resolve, reject) {
+      const query = `SELECT (${table}.nominal + ${join}.add_price) AS 'Total Price' FROM ${table} 
+                    JOIN ${join} ON ${table}.id=${join}.nominal_id WHERE ${table}.id=${idNominal}`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        console.log(results)
+        if (err) {
+          reject(err)
+        } else {
+          if (results[0]) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
   }
-  // totalTransaction: function (idNominal, idPoint, idPrice) {
-  //   const query = 'a'
-  // }
 }
