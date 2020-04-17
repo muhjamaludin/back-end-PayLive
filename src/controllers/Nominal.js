@@ -10,17 +10,20 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
-    const { id } = req.params
-    const results = await NominalModel.getById(id)
+    const { idUser } = req.params
+    const { idCategory, idOperator, idPaySistem } = req.body
+    console.log(idCategory, idOperator, idPaySistem)
+    const results = await NominalModel.getById(idCategory, idOperator, idPaySistem)
     const data = {
       success: false,
+      idUser: idUser,
       data: results
     }
     res.send(data)
   },
   create: async function (req, res) {
-    const { idOperator, idPaySistem, nominal } = req.body
-    const results = await NominalModel.createNominal(idOperator, idPaySistem, nominal)
+    const { idCategory, idOperator, idPaySistem, nominal } = req.body
+    const results = await NominalModel.createNominal(idCategory, idOperator, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,
@@ -37,8 +40,8 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idOperator, idPaySistem, nominal } = req.body
-    const results = await NominalModel.updateNominal(id, idOperator, idPaySistem, nominal)
+    const { idCategory, idOperator, idPaySistem, nominal } = req.body
+    const results = await NominalModel.updateNominal(id, idCategory, idOperator, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,

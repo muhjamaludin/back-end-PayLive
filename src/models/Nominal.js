@@ -13,23 +13,24 @@ module.exports = {
       })
     })
   },
-  getById: function (id) {
+  getById: function (idCategory, idOperator, idPaySistem) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT * FROM ${table} where id=${id}`
+      const query = `SELECT nominal FROM ${table} where id_category=${idCategory} AND id_operator=${idOperator} AND pay_sistem_id=${idPaySistem}`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
+          console.log(results)
           resolve(results)
         }
       })
     })
   },
-  createNominal: function (idOperator, idPaySistem, nominal) {
+  createNominal: function (idCategory, idOperator, idPaySistem, nominal) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `INSERT INTO ${table} (id_operator, pay_sistem_id, nominal) VALUES (${idOperator}, ${idPaySistem}, ${nominal})`
+      const query = `INSERT INTO ${table} (id_category, id_operator, pay_sistem_id, nominal) VALUES (${idCategory}, ${idOperator}, ${idPaySistem}, ${nominal})`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -44,10 +45,10 @@ module.exports = {
       })
     })
   },
-  updateNominal: function (id, idOperator, idPaySistem, nominal) {
+  updateNominal: function (id, idCategory, idOperator, idPaySistem, nominal) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET id_operator=${idOperator}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
+      const query = `UPDATE ${table} SET id_category=${idCategory}, id_operator=${idOperator}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
