@@ -2,7 +2,7 @@ const OperatorModel = require('../models/Operator')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await CategoryModel.getAllCategory()
+    const results = await OperatorModel.getAllOperator()
     const data = {
       success: true,
       data: results
@@ -12,7 +12,7 @@ module.exports = {
   readById: async function (req, res) {
     const data = {
       success: true,
-      data: await CategoryModel.getCategoryById(req.params.id)
+      data: await OperatorModel.getOperatorById(req.params.id)
     }
     res.send(data)
   },
@@ -63,11 +63,11 @@ module.exports = {
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await CategoryModel.deleteCategory(id)
+    const results = await OperatorModel.deleteOperator(id)
     if (results) {
       const data = {
         success: true,
-        msg: `Category name with id ${id} has been deleted!`
+        msg: `Operator name with id ${id} has been deleted!`
       }
       res.send(data)
     } else {

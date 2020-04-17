@@ -1,7 +1,7 @@
 const db = require('../utils/db')
 module.exports = {
-  getAllCategory: function () {
-    const table = 'category'
+  getAllOperator: function () {
+    const table = 'operators'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}`
       db.query(query, function (err, results, fields) {
@@ -13,8 +13,8 @@ module.exports = {
       })
     })
   },
-  getCategoryById: function (id) {
-    const table = 'category'
+  getOperatorById: function (id) {
+    const table = 'operators'
     const query = `SELECT * FROM ${table} WHERE id=${id}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
@@ -66,8 +66,8 @@ module.exports = {
       })
     })
   },
-  deleteCategory: function (id) {
-    const table = 'category'
+  deleteOperator: function (id) {
+    const table = 'operators'
     return new Promise(function (resolve, reject) {
       const query = ` DELETE FROM ${table} WHERE id= ${id}`
       console.log(query)

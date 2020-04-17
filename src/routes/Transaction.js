@@ -21,8 +21,11 @@ Transactions.patch('/category/:id', CategoryControllers.update)
 Transactions.delete('/category/:id', CategoryControllers.delete)
 
 // operator
+Transactions.get('/operator', OperatorControllers.read)
+Transactions.get('/operator/:id', OperatorControllers.readById)
 Transactions.post('/operator', OperatorControllers.create)
 Transactions.patch('/operator/:id', OperatorControllers.update)
+Transactions.delete('/operator/:id', OperatorControllers.delete)
 
 // pay sistem
 Transactions.get('/paysistem', PaySistemControllers.read)
