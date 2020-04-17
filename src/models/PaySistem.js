@@ -33,7 +33,7 @@ module.exports = {
   createPaySistem: function (idOperator, name) {
     const table = 'pay_sistems'
     return new Promise(function (resolve, reject) {
-      const query = `INSERT INTO ${table} (id_menu, name) VALUES (${idOperator}, '${name}')`
+      const query = `INSERT INTO ${table} (id_operator, name) VALUES (${idOperator}, '${name}')`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -51,7 +51,7 @@ module.exports = {
   updatePaySistem: function (idOperator, name) {
     const table = 'pay_sistems'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET name='${name}' WHERE id_menu=${idOperator}`
+      const query = `UPDATE ${table} SET name='${name}' WHERE id_operator=${idOperator}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {

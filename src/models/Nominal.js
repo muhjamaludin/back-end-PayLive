@@ -29,7 +29,7 @@ module.exports = {
   createNominal: function (idOperator, idPaySistem, nominal) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `INSERT INTO ${table} (id_menu, pay_sistem_id, nominal) VALUES (${idOperator}, ${idPaySistem}, ${nominal})`
+      const query = `INSERT INTO ${table} (id_operator, pay_sistem_id, nominal) VALUES (${idOperator}, ${idPaySistem}, ${nominal})`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -47,7 +47,7 @@ module.exports = {
   updateNominal: function (id, idOperator, idPaySistem, nominal) {
     const table = 'nominals'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET id_menu=${idOperator}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
+      const query = `UPDATE ${table} SET id_operator=${idOperator}, pay_sistem_id=${idPaySistem}, nominal=${nominal} WHERE id=${id}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {

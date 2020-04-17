@@ -11,7 +11,7 @@ const check = function (err, results, fields) {
 db.query(
   `CREATE TABLE IF NOT EXISTS pay_sistems(
   id INT PRIMARY KEY AUTO_INCREMENT,
-  id_menu TINYINT(2) NOT NULL,
+  id_operator TINYINT(2) NOT NULL,
   name VARCHAR(30) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
@@ -21,7 +21,8 @@ db.query(
 db.query(`
   CREATE TABLE IF NOT EXISTS nominals(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_menu TINYINT(2) NOT NULL,
+    id_category TINYINT(2) NOT NULL,
+    id_operator TINYINT(2) NOT NULL,
     pay_sistem_id INT(2) NOT NULL,
     nominal INT(8) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -41,7 +42,7 @@ db.query(`
 db.query(`
   CREATE TABLE IF NOT EXISTS transactions(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    id_menu TINYINT(2) NOT NULL,
+    id_operator TINYINT(2) NOT NULL,
     pay_sistem_id TINYINT(2) NOT NULL,
     nominal_id TINYINT(8) NOT NULL,
     add_price TINYINT(8) NOT NULL,
