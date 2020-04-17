@@ -9,7 +9,7 @@ const check = function (err, results, fields) {
 }
 
 db.query(
-  `CREATE TABLE IF NOT EXISTS menu(
+  `CREATE TABLE IF NOT EXISTS operators(
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

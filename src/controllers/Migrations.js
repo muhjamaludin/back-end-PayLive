@@ -2,7 +2,7 @@ module.exports = {
   migration: (req, res) => {
     require('../migrations/Category')
     require('../migrations/Partner')
-    require('../migrations/Topup')
+    require('../migrations/Operator')
     require('../migrations/Transactions')
     require('../migrations/User')
     require('../migrations/Vouchers')
