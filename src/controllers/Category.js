@@ -36,7 +36,7 @@ module.exports = {
       }
     } else {
       const data = {
-        succes: false,
+        idOperator: false,
         msg: 'Name of your input unknown'
       }
       res.send(data)
@@ -47,7 +47,7 @@ module.exports = {
     const { name } = req.body
     if (name.length > 60) {
       const data = {
-        succes: false,
+        idOperator: false,
         msg: 'your input too long, please input under 10 character'
       }
       res.send(data)

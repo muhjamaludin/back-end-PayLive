@@ -19,12 +19,12 @@ module.exports = {
     res.send(data)
   },
   create: async function (req, res) {
-    const { idMenu, idPaySistem, idNominal, price } = req.body
-    const results = await TransactionModel.createPrice(idMenu, idPaySistem, idNominal, price)
+    const { idOperator, idPaySistem, idNominal, price } = req.body
+    const results = await TransactionModel.createPrice(idOperator, idPaySistem, idNominal, price)
     if (results) {
       const data = {
         success: true,
-        msg: `Price for id_menu ${idMenu} id_pay_sistem ${idPaySistem} id_nominal ${idNominal} has been created`
+        msg: `Price for id_menu ${idOperator} id_pay_sistem ${idPaySistem} id_nominal ${idNominal} has been created`
       }
       res.send(data)
     } else {
@@ -37,12 +37,12 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idMenu, idPaySistem, idNominal, price } = req.body
-    const results = await TransactionModel.updatePrice(id, idMenu, idPaySistem, idNominal, price)
+    const { idOperator, idPaySistem, idNominal, price } = req.body
+    const results = await TransactionModel.updatePrice(id, idOperator, idPaySistem, idNominal, price)
     if (results) {
       const data = {
         success: true,
-        msg: `Total price with id menu = ${idMenu} and idPaySistem = ${idPaySistem} has been updated!`,
+        msg: `Total price with id menu = ${idOperator} and idPaySistem = ${idPaySistem} has been updated!`,
         data: { id, ...req.body }
       }
       res.send(data)

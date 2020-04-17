@@ -17,10 +17,10 @@ module.exports = {
     res.send(data)
   },
   create: async function (req, res) {
-    const { idMenu, name } = req.body
+    const { idOperator, name } = req.body
     const typeName = typeof name
     if (typeName !== 'undefined') {
-      const results = await PaySistemModel.createPaySistem(idMenu, name)
+      const results = await PaySistemModel.createPaySistem(idOperator, name)
       if (results) {
         const data = {
           success: true,
@@ -44,7 +44,7 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idMenu, name } = req.body
+    const { idOperator, name } = req.body
     if (name.length > 60) {
       const data = {
         succes: false,
@@ -52,7 +52,7 @@ module.exports = {
       }
       res.send(data)
     } else {
-      const results = await PaySistemModel.updatePaySistem(idMenu, name)
+      const results = await PaySistemModel.updatePaySistem(idOperator, name)
       if (results) {
         const data = {
           success: true,
