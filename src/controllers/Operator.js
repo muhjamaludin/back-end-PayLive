@@ -45,28 +45,20 @@ module.exports = {
   update: async function (req, res) {
     const { id } = req.params
     const { name } = req.body
-    if (name.length > 60) {
+    const results = await OperatorModel.updateOperator(id, name)
+    if (results) {
       const data = {
-        idOperator: false,
-        msg: 'your input too long, please input under 10 character'
+        success: true,
+        msg: `Name ${name} has been updated!`,
+        data: { id, ...req.body }
       }
       res.send(data)
     } else {
-      const results = await CategoryModel.updateCategory(id, name)
-      if (results) {
-        const data = {
-          success: true,
-          msg: `Name ${name} has been updated!`,
-          data: { id, ...req.body }
-        }
-        res.send(data)
-      } else {
-        const data = {
-          success: false,
-          msg: 'There is no data can be updated'
-        }
-        res.send(data)
+      const data = {
+        success: false,
+        msg: 'There is no data can be updated'
       }
+      res.send(data)
     }
   },
   delete: async function (req, res) {
