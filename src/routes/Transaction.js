@@ -49,5 +49,6 @@ Transactions.patch('/pay/:id', TransactionControllers.update)
 Transactions.delete('/pay/:id', TransactionControllers.delete)
 
 // purchase
+Transactions.post('/pay/purchase/:idUser', TransactionControllers.purchase)
 
 module.exports = Transactions

@@ -88,12 +88,66 @@ module.exports = {
                     JOIN ${join} ON ${table}.id=${join}.nominal_id WHERE ${table}.id=${idNominal}`
       console.log(query)
       db.query(query, function (err, results, fields) {
-        console.log(results)
         if (err) {
           reject(err)
         } else {
           if (results[0]) {
             resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  payTransaction: function (idUser, idNominal) {
+    const table = 'nominals'
+    const join = 'transactions'
+    return new Promise(function (resolve, reject) {
+      const query = `SELECT (${table}.nominal + ${join}.add_price) AS 'totalPrice' FROM ${table}
+                    JOIN ${join} ON ${table}.id=${join}.nominal_id WHERE ${table}.id=${idNominal}`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results) {
+            // resolve(results)
+            const price = results[0].totalPrice
+            const query1 = `SELECT (cash - ${price}) AS balanceNow FROM user_details where id_user=${idUser}`
+            db.query(query1, function (err, results, fields) {
+              if (err) {
+                reject(err)
+              } else {
+                if (results) {
+                  // resolve(result)
+                  console.log(results[0].balanceNow)
+                  const balance = results[0].balanceNow
+                  const query3 = `UPDATE user_details SET cash=${balance} WHERE id_user=${idUser}`
+                  db.query(query3, function (err, results, fields) {
+                    if (err) {
+                      reject(err)
+                    } else {
+                      if (results) {
+                        const query4 = `SELECT cash from user_details WHERE id_user=${idUser}`
+                        db.query(query4, function (err, results, fields) {
+                          if (err) {
+                            reject(err)
+                          } else {
+                            if (results) {
+                              console.log(results)
+                              resolve(results)
+                            } else {
+                              resolve(false)
+                            }
+                          }
+                        })
+                      }
+                    }
+                  })
+                }
+              }
+            })
           } else {
             resolve(false)
           }

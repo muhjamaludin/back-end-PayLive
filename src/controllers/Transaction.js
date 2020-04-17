@@ -1,4 +1,5 @@
 const TransactionModel = require('../models/Transaction')
+// const UserModel = require('../models/Users')
 
 module.exports = {
   read: async function (req, res) {
@@ -84,8 +85,27 @@ module.exports = {
         }
         res.send(data)
       }
-    } catch {
-      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  },
+  purchase: async function (req, res) {
+    try {
+      const { idUser } = req.params
+      const { idNominal } = req.body
+      const results = await TransactionModel.payTransaction(idUser, idNominal)
+      // const purchase =
+      if (results) {
+        console.log(results[0])
+        const data = {
+          success: true,
+          msg: '`Thank you for Your Purchase, Please enjoy our products`',
+          data: { idUser, cash: results[0].cash }
+        }
+        res.send(data)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 }
