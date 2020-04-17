@@ -48,4 +48,6 @@ Transactions.get('/pay/:id', TransactionControllers.readById)
 Transactions.patch('/pay/:id', TransactionControllers.update)
 Transactions.delete('/pay/:id', TransactionControllers.delete)
 
+// purchase
+
 module.exports = Transactions

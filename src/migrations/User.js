@@ -28,7 +28,7 @@ db.query(`
     id_user INT(5) NOT NULL,
     fullname VARCHAR(30) NOT NULL,
     email VARCHAR(20) NOT NULL,
-    profil_picture TEXT,
+    profile_picture TEXT,
     identity_picture TEXT,
     balance INT(8) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

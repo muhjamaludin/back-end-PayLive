@@ -70,5 +70,17 @@ module.exports = {
       }
       res.send(data)
     }
+  },
+  TotalPrice: async function (req, res) {
+    const { idNominal, idPoint, idPrice } = req.body
+    const results = await TransactionModel.totalTransaction(idNominal, idPoint, idPrice)
+    if (results) {
+      const data = {
+        success: true,
+        msg: '`Total Appear`',
+        Total: { results }
+      }
+      res.send(data)
+    }
   }
 }

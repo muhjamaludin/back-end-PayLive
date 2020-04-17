@@ -6,11 +6,11 @@ const storage = multer.diskStorage({
   }
 })
 
-const fileFilter = function (req, file, callback) {
+const fileFilter = function (req, file, next) {
   if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-    callback(Error('Only .png, .jpg and .jpeg format allowed!'), false)
+    next({ message: 'Only .png, .jpg and .jpeg format allowed!', code: 'FORMATTYPE' }, false)
   }
-  callback(null, true)
+  next(null, true)
 }
 const upload = multer({ storage, fileFilter, limits: { fileSize: 500000 } })
 

@@ -79,5 +79,8 @@ module.exports = {
         }
       })
     })
+  },
+  totalTransaction: function (idNominal, idPoint, idPrice) {
+    const query = 'a'
   }
 }
