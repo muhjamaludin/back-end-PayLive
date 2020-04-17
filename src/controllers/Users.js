@@ -101,19 +101,45 @@ module.exports = {
   topup: async function (req, res) {
     const { idUser } = req.params
     const { balance } = req.body
-    const result = await UserModel.topupBalance(idUser, balance)
-    if (result) {
+    const topup = parseInt(balance)
+    if (topup < 0) {
       const data = {
-        succes: true,
-        msg: `Your balance has been added with ${balance} rupiah`
+        success: false,
+        msg: 'Wrong input balance'
       }
       res.send(data)
     } else {
-      const data = {
-        succes: false,
-        msg: 'failed topup'
+      if (topup > 0 && topup < 10000) {
+        const data = {
+          success: false,
+          msg: 'Minimum top up is Rp 10.000,00'
+        }
+        res.send(data)
+      } else {
+        if (topup > 1000000) {
+          const data = {
+            success: false,
+            msg: 'Maximum top up is Rp 1.000.000,00 Rupiah'
+          }
+          res.send(data)
+        } else {
+          const result = await UserModel.topupBalance(idUser, topup)
+          console.log(result)
+          if (result) {
+            const data = {
+              success: true,
+              msg: `Your balance has been added with ${balance} rupiah`
+            }
+            res.send(data)
+          } else {
+            const data = {
+              success: false,
+              msg: 'failed topup, your account not found'
+            }
+            res.send(data)
+          }
+        }
       }
-      res.send(data)
     }
   }
 }
