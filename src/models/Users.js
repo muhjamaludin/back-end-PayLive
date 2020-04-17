@@ -110,7 +110,7 @@ module.exports = {
   topupBalance: function (idUser, balance) {
     const table = 'user_details'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET balance='${balance}' WHERE id_user=${idUser}`
+      const query = `UPDATE ${table} SET cash='${balance}' WHERE id_user=${idUser}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -164,6 +164,23 @@ module.exports = {
   getUserById: function (id) {
     const table = 'users'
     const query = `SELECT * FROM ${table} WHERE id=${id}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getCash: function (id) {
+    const table = 'user_details'
+    const query = `SELECT cash from ${table} where id=${id}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {

@@ -30,7 +30,8 @@ db.query(`
     email VARCHAR(20) NOT NULL,
     profile_picture TEXT,
     identity_picture TEXT,
-    balance INT(8) NULL,
+    cash INT(8) NULL,
+    points INT(8) NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
   )

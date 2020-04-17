@@ -141,5 +141,16 @@ module.exports = {
         }
       }
     }
+  },
+  getCash: async function (req, res) {
+    const { id } = req.params
+    const results = await UserModel.getCash(id)
+    if (results) {
+      const data = {
+        success: true,
+        data: { id, ...results }
+      }
+      res.send(data)
+    }
   }
 }
