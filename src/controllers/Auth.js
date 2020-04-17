@@ -51,7 +51,7 @@ module.exports = {
           }
         } else {
           const data = {
-            succes: false,
+            success: false,
             msg: 'email not valid'
           }
           res.send(data)
@@ -59,7 +59,7 @@ module.exports = {
       }
     } else {
       const data = {
-        succes: false,
+        success: false,
         msg: 'Phone number is not valid'
       }
       res.send(data)
@@ -75,14 +75,14 @@ module.exports = {
       const results = await UserModel.createSecurityCode(id, encrypPass)
       if (results) {
         const data = {
-          succes: true,
+          success: true,
           msg: 'security_code has been created, You can go home now'
         }
         res.send(data)
       }
     } else {
       const data = {
-        succes: false,
+        success: false,
         msg: 'Security Code mush have 6 numbers'
       }
       res.send(data)
@@ -93,7 +93,7 @@ module.exports = {
     if (await AuthModel.verifyUser(phone, code)) {
       const data = {
         success: true,
-        msg: 'User activated succesfully Please made security code'
+        msg: 'User activated successfully Please made security code'
       }
       res.send(data)
     } else {
@@ -147,7 +147,7 @@ module.exports = {
       }
     } else {
       const data = {
-        succes: false,
+        success: false,
         msg: 'Security Code mush have 6 numbers'
       }
       res.send(data)
@@ -166,14 +166,14 @@ module.exports = {
         res.send(data)
       } else {
         const data = {
-          succes: true,
+          success: true,
           msg: 'Phone available, Please Verify and insert your security code to enjoy the feature'
         }
         res.send(data)
       }
     } else {
       const data = {
-        succes: false,
+        success: false,
         msg: 'Phone number is not valid'
       }
       res.send(data)
@@ -184,7 +184,7 @@ module.exports = {
     const user = await AuthModel.getUserById(id)
     if (!user) {
       const data = {
-        succes: false,
+        success: false,
         msg: `Internal params error, id ${id} Not Found`
       }
       res.send(data)
