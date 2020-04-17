@@ -4,6 +4,7 @@ const NominalControllers = require('../controllers/Nominal')
 const CategoryControllers = require('../controllers/Category')
 const PaySistemControllers = require('../controllers/PaySistem')
 const TransactionControllers = require('../controllers/Transaction')
+const OperatorControllers = require('../controllers/Operator')
 
 // cash points
 Transactions.get('/point', CashPointControllers.read) // get all cash point
@@ -18,6 +19,10 @@ Transactions.get('/category/:id', CategoryControllers.readById)
 Transactions.post('/category', CategoryControllers.create)
 Transactions.patch('/category/:id', CategoryControllers.update)
 Transactions.delete('/category/:id', CategoryControllers.delete)
+
+// operator
+Transactions.post('/operator', OperatorControllers.create)
+Transactions.patch('/operator/:id', OperatorControllers.update)
 
 // pay sistem
 Transactions.get('/paysistem', PaySistemControllers.read)
