@@ -10,9 +10,11 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
+    const { idUser } = req.params
     const data = {
       success: true,
-      data: await CategoryModel.getCategoryById(req.params.id)
+      idUser: idUser,
+      data: await CategoryModel.getCategoryById(req.body.idCategory)
     }
     res.send(data)
   },

@@ -10,9 +10,11 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
+    const { idUser } = req.params
     const data = {
       success: true,
-      data: await OperatorModel.getOperatorById(req.params.id)
+      idUser: idUser,
+      data: await OperatorModel.getOperatorById(req.body.idOperator)
     }
     res.send(data)
   },

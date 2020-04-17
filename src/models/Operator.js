@@ -13,9 +13,9 @@ module.exports = {
       })
     })
   },
-  getOperatorById: function (id) {
+  getOperatorById: function (idOperator) {
     const table = 'operators'
-    const query = `SELECT * FROM ${table} WHERE id=${id}`
+    const query = `SELECT * FROM ${table} WHERE id=${idOperator}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {

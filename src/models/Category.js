@@ -13,9 +13,9 @@ module.exports = {
       })
     })
   },
-  getCategoryById: function (id) {
+  getCategoryById: function (idCategory) {
     const table = 'category'
-    const query = `SELECT * FROM ${table} WHERE id=${id}`
+    const query = `SELECT * FROM ${table} WHERE id=${idCategory}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
