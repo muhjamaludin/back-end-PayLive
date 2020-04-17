@@ -1,13 +1,6 @@
 const Users = require('express').Router()
 const UserControllers = require('../controllers/Users')
-const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: 'files/profile/',
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-})
-const upload = multer({ storage })
+const upload = require('../helpers/multer')
 
 Users.get('/', UserControllers.read) // get all user for Admin
 Users.get('/:id', UserControllers.getUser) // get user by Id

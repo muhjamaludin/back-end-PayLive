@@ -1,13 +1,6 @@
 const Vouchers = require('express').Router()
 const VoucherControllers = require('../controllers/Voucher')
-const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: 'files/voucher/',
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`)
-  }
-})
-const upload = multer({ storage })
+const upload = require('../helpers/multer')
 
 Vouchers.get('/', VoucherControllers.read)
 Vouchers.get('/:id', VoucherControllers.getVoucher)
