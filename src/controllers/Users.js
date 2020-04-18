@@ -38,26 +38,39 @@ module.exports = {
     }
     res.send(data)
   },
+  getDetails: async function (req, res) {
+    const data = {
+      success: true,
+      data: await UserModel.getUserById(req.params.id)
+    }
+    res.send(data)
+  },
   update: async function (req, res) {
-    const { id } = req.params
-    const { fullname, phone, email } = req.body
-    const idUser = id
-    console.log(idUser, fullname, email, phone)
-    const results = await UserModel.updateUser(id, phone)
-    await UserModel.updateUserDetails(idUser, fullname, email)
-    if (results) {
-      const data = {
-        success: true,
-        msg: `User with phone ${phone} has been updated!`,
-        data: { id, ...req.body }
+    try {
+      console.log(req.file)
+      const { id } = req.params
+      const { fullname, phone, email } = req.body
+      const picture = (req.file && req.file.filename) || 'ayam'
+      const idUser = id
+      console.log(idUser, fullname, email, phone)
+      const results = await UserModel.updateUser(id, phone)
+      await UserModel.updateUserDetails(idUser, picture, fullname, email)
+      if (results) {
+        const data = {
+          success: true,
+          msg: `User with phone ${phone} has been updated!`,
+          data: { id, ...req.body }
+        }
+        res.send(data)
+      } else {
+        const data = {
+          success: false,
+          msg: 'There is no data can be updated'
+        }
+        res.send(data)
       }
-      res.send(data)
-    } else {
-      const data = {
-        success: false,
-        msg: 'There is no data can be updated'
-      }
-      res.send(data)
+    } catch (err) {
+      console.log(err)
     }
   },
   uploadPhoto: async function (req, res) {
@@ -128,7 +141,8 @@ module.exports = {
           if (result) {
             const data = {
               success: true,
-              msg: `Your balance has been added with ${balance} rupiah`
+              msg: `Your cash has been added with ${balance} rupiah`,
+              data: { ...result }
             }
             res.send(data)
           } else {
@@ -143,14 +157,48 @@ module.exports = {
     }
   },
   getCash: async function (req, res) {
-    const { id } = req.params
-    const results = await UserModel.getCash(id)
+    const { idUser } = req.params
+    const results = await UserModel.getCash(idUser)
     if (results) {
       const data = {
         success: true,
-        data: { id, ...results }
+        data: { idUser, ...results }
       }
       res.send(data)
+    } else {
+      const data = {
+        success: false,
+        msg: 'There is no data for your request'
+      }
+      res.send(data)
+    }
+  },
+  transfer: async function (req, res) {
+    try {
+      const { idUser } = req.params
+      const { idUserReceiver, amount } = req.body
+      await UserModel.transferCash(idUserReceiver, amount)
+      const results = await UserModel.getCashTransfer(idUser, amount)
+      console.log(idUser)
+      // if (amount > cash )
+      // const results = UserModel.getCashTransfer(idUser, amount)
+      // await UserModel.topupBalance(idUserReceiver, amount)
+      if (results) {
+        const data = {
+          success: true,
+          msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
+          data: { idUser, ...results }
+        }
+        res.send(data)
+      } else {
+        const data = {
+          success: false,
+          msg: 'Your access has been wrong input'
+        }
+        res.send(data)
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 }

@@ -120,7 +120,6 @@ module.exports = {
                 reject(err)
               } else {
                 if (results) {
-                  // resolve(result)
                   console.log(results[0].balanceNow)
                   const balance = results[0].balanceNow
                   const query3 = `UPDATE user_details SET cash=${balance} WHERE id_user=${idUser}`

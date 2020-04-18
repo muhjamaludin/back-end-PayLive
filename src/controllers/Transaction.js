@@ -96,10 +96,9 @@ module.exports = {
       const results = await TransactionModel.payTransaction(idUser, idNominal)
       // const purchase =
       if (results) {
-        console.log(results[0])
         const data = {
           success: true,
-          msg: '`Thank you for Your Purchase, Please enjoy our products`',
+          msg: 'Thank you for Your Purchase, Please enjoy our products',
           data: { idUser, cash: results[0].cash }
         }
         res.send(data)

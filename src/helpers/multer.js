@@ -2,6 +2,7 @@ const multer = require('multer')
 const storage = multer.diskStorage({
   destination: 'files/profile/',
   filename: function (req, file, cb) {
+    console.log(file)
     cb(null, `${Date.now()}-${file.originalname}`)
   }
 })
@@ -12,6 +13,6 @@ const fileFilter = function (req, file, next) {
   }
   next(null, true)
 }
-const upload = multer({ storage, fileFilter, limits: { fileSize: 500000 } })
+const upload = multer({ storage, fileFilter, limits: { fileSize: 5000000 } })
 
 module.exports = upload

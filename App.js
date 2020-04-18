@@ -1,15 +1,18 @@
 const express = require('express')
 const app = express()
 const createError = require('http-errors')
+// const path = require()
 // configure
 require('dotenv').config()
 
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
-app.use(bodyParser.urlencoded({ extended: false })) // for x-www-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })) // for x-www-urlencoded
 app.use(bodyParser.json()) // for json
 app.use(cors('*'))
+
+app.use('/upload/files', express.static('./files'))
 
 // source router
 const AuthRouter = require('./src/routes/Auth')
@@ -45,7 +48,7 @@ app.use((err, req, res, next) => {
     res.status(400).send({ err: err.message })
   }
   res.status(err.status || 500)
-  res.send(err.status)
+  res.sendStatus(err.status)
 })
 
 // base url & PORT
