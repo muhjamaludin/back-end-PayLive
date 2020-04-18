@@ -97,11 +97,11 @@ module.exports = {
       })
     })
   },
-  verifyUser: async function (phone, code) {
+  verifyUser: async function (id, code) {
     const table = 'users'
-    const checkUser = await this.checkPhone(phone)
+    const checkUser = await this.getUserById(id)
     console.log(checkUser)
-    const query = `UPDATE ${table} SET verification_code=${null}, is_verified = 1, is_active=1 WHERE phone='${phone}' AND verification_code = '${code}'`
+    const query = `UPDATE ${table} SET verification_code=${null}, is_verified = 1, is_active=1 WHERE id=${id} AND verification_code = '${code}'`
     return new Promise(function (resolve, reject) {
       if (!checkUser) {
         resolve(false)

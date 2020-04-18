@@ -89,11 +89,13 @@ module.exports = {
     }
   },
   verify: async function (req, res) {
-    const { phone, code } = req.query
-    if (await AuthModel.verifyUser(phone, code)) {
+    const { code } = req.query
+    const { id } = req.params
+    if (await AuthModel.verifyUser(id, code)) {
       const data = {
         success: true,
-        msg: 'User activated successfully Please made security code'
+        msg: 'User activated successfully Please made security code',
+        data: id
       }
       res.send(data)
     } else {
