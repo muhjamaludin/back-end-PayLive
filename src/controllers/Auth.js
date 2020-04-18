@@ -158,6 +158,7 @@ module.exports = {
     const valid = phone.length > 10 && phone.length < 13
     if (valid) {
       const checkUser = await AuthModel.checkPhone(phone)
+      const idUserPhone = await AuthModel.checkUserPhone(phone)
       if (!checkUser) {
         const data = {
           success: false,
@@ -167,7 +168,8 @@ module.exports = {
       } else {
         const data = {
           success: true,
-          msg: 'Phone available, Please Verify and insert your security code to enjoy the feature'
+          msg: 'Phone available, Please Verify and insert your security code to enjoy the feature',
+          data: { id_user: idUserPhone[0].id }
         }
         res.send(data)
       }

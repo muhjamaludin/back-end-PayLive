@@ -14,6 +14,20 @@ module.exports = {
       })
     })
   },
+  checkUserPhone: function (phone) {
+    const table = 'users'
+    return new Promise(function (resolve, reject) {
+      const query = `SELECT id FROM ${table} WHERE phone=${phone}`
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(results)
+          console.log(results)
+        }
+      })
+    })
+  },
   getUserByPhone: function (phone) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
