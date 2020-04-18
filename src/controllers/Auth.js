@@ -32,6 +32,7 @@ module.exports = {
               const data = {
                 success: true,
                 msg: `register for phone number ${phone} success \n waiting for verify`,
+                id: info.id,
                 code
               }
               res.send(data)
