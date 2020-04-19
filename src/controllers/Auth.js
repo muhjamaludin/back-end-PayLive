@@ -124,7 +124,9 @@ module.exports = {
             const data = {
               success: true,
               token,
-              msg: 'Let\'s go Home with token'
+              msg: 'Let\'s go Home with token',
+              id_user: id
+
             }
             res.send(data)
           } else {
