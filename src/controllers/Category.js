@@ -10,9 +10,11 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
+    const { idUser } = req.params
     const data = {
       success: true,
-      data: await CategoryModel.getCategoryById(req.params.id)
+      idUser: idUser,
+      data: await CategoryModel.getCategoryById(req.body.idCategory)
     }
     res.send(data)
   },
@@ -36,7 +38,7 @@ module.exports = {
       }
     } else {
       const data = {
-        succes: false,
+        idOperator: false,
         msg: 'Name of your input unknown'
       }
       res.send(data)
@@ -47,7 +49,7 @@ module.exports = {
     const { name } = req.body
     if (name.length > 60) {
       const data = {
-        succes: false,
+        idOperator: false,
         msg: 'your input too long, please input under 10 character'
       }
       res.send(data)

@@ -88,11 +88,11 @@ module.exports = {
       })
     })
   },
-  updateUserDetails: function (idUser, picture) {
+  updateUserDetails: function (idUser, picture, fullname, email) {
     picture = (typeof picture === 'string' ? `'${picture}'` : picture)
     const table = 'user_details'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET profile_picture=${picture} WHERE id_user=${idUser}`
+      const query = `UPDATE ${table} SET fullname='${fullname}', email='${email}', profile_picture=${picture} WHERE id_user=${idUser}`
       console.log(query)
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -107,17 +107,41 @@ module.exports = {
       })
     })
   },
-  topupBalance: function (idUser, balance) {
+  topupBalance: function (idUser, topup) {
     const table = 'user_details'
     return new Promise(function (resolve, reject) {
-      const query = `UPDATE ${table} SET balance='${balance}' WHERE id_user=${idUser}`
-      console.log(query)
+      const query = `SELECT cash FROM ${table} WHERE id_user=${idUser}`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
-          if (results.affectedRows) {
-            resolve(results.affectedRows)
+          if (results) {
+            let cash = (results[0].cash)
+            cash = cash === null ? cash = 0 : cash = `${cash}`
+            const query1 = `UPDATE ${table} SET cash= (${topup} + ${cash}) WHERE id_user=${idUser}`
+            console.log(query1)
+            db.query(query1, function (err, result, fields) {
+              if (err) {
+                reject(err)
+              } else {
+                if (result) {
+                  const query3 = `SELECT cash from ${table} WHERE id_user=${idUser}`
+                  db.query(query3, function (err, results, fields) {
+                    if (err) {
+                      reject(err)
+                    } else {
+                      if (results) {
+                        resolve(results[0])
+                      } else {
+                        resolve(false)
+                      }
+                    }
+                  })
+                } else {
+                  resolve(false)
+                }
+              }
+            })
           } else {
             resolve(false)
           }
@@ -171,6 +195,110 @@ module.exports = {
         } else {
           if (results.length) {
             resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getDetailsById: function (id) {
+    const table = 'user_details'
+    const query = `SELECT * FROM ${table} WHERE id_user=${id}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getCash: function (idUser) {
+    const table = 'user_details'
+    const query = `SELECT cash from ${table} where id_user=${idUser}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  transferCash: function (idUserReceiver, amount) {
+    const table = 'user_details'
+    const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results) {
+            const cashReceiver = results[0].cash
+            const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
+            db.query(query1, function (err, results, fields) {
+              if (err) {
+                reject(err)
+              } else {
+                if (results) {
+                  resolve(results)
+                } else {
+                  resolve(false)
+                }
+              }
+            })
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getCashTransfer: function (idUser, amount) {
+    const table = 'user_details'
+    const query = `SELECT cash from ${table} where id_user=${idUser}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results) {
+            const cash = results[0].cash
+            const query1 = `UPDATE ${table} SET cash = (${cash} - ${amount}) WHERE id_user=${idUser}`
+            db.query(query1, function (err, results, fields) {
+              if (err) {
+                reject(err)
+              } else {
+                if (results) {
+                  const queryBalance = `SELECT cash from ${table} where id_user=${idUser}`
+                  db.query(queryBalance, function (err, results, fields) {
+                    if (err) {
+                      reject(err)
+                    } else {
+                      if (results) {
+                        resolve(results)
+                        console.log(results)
+                      } else {
+                        resolve(false)
+                      }
+                    }
+                  })
+                } else {
+                  resolve(false)
+                }
+              }
+            })
           } else {
             resolve(false)
           }

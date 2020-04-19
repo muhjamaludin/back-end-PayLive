@@ -10,21 +10,24 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
-    const { id } = req.params
-    const results = await NominalModel.getById(id)
+    const { idUser } = req.params
+    const { idCategory, idOperator, idPaySistem } = req.body
+    console.log(idCategory, idOperator, idPaySistem)
+    const results = await NominalModel.getById(idCategory, idOperator, idPaySistem)
     const data = {
       success: false,
+      idUser: idUser,
       data: results
     }
     res.send(data)
   },
   create: async function (req, res) {
-    const { idMenu, idPaySistem, nominal } = req.body
-    const results = await NominalModel.createNominal(idMenu, idPaySistem, nominal)
+    const { idCategory, idOperator, idPaySistem, nominal } = req.body
+    const results = await NominalModel.createNominal(idCategory, idOperator, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,
-        msg: `Nominal price for id menu ${idMenu} has been created`
+        msg: `Nominal price for id menu ${idOperator} has been created`
       }
       res.send(data)
     } else {
@@ -37,12 +40,12 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idMenu, idPaySistem, nominal } = req.body
-    const results = await NominalModel.updateNominal(id, idMenu, idPaySistem, nominal)
+    const { idCategory, idOperator, idPaySistem, nominal } = req.body
+    const results = await NominalModel.updateNominal(id, idCategory, idOperator, idPaySistem, nominal)
     if (results) {
       const data = {
         success: true,
-        msg: `Nonimal id menu = ${idMenu} and idPaySistem = ${idPaySistem} has been updated!`,
+        msg: `Nonimal id menu = ${idOperator} and idPaySistem = ${idPaySistem} has been updated!`,
         data: { id, ...req.body }
       }
       res.send(data)

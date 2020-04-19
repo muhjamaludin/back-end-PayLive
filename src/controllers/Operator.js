@@ -1,8 +1,8 @@
-const PaySistemModel = require('../models/PaySistem')
+const OperatorModel = require('../models/Operator')
 
 module.exports = {
   read: async function (req, res) {
-    const results = await PaySistemModel.getAllPaySistem()
+    const results = await OperatorModel.getAllOperator()
     const data = {
       success: true,
       data: results
@@ -10,33 +10,35 @@ module.exports = {
     res.send(data)
   },
   readById: async function (req, res) {
+    const { idUser } = req.params
     const data = {
       success: true,
-      data: await PaySistemModel.getById(req.params.id)
+      idUser: idUser,
+      data: await OperatorModel.getOperatorById(req.body.idOperator)
     }
     res.send(data)
   },
   create: async function (req, res) {
-    const { idOperator, name } = req.body
+    const { name } = req.body
     const typeName = typeof name
     if (typeName !== 'undefined') {
-      const results = await PaySistemModel.createPaySistem(idOperator, name)
+      const results = await OperatorModel.createOperator(name)
       if (results) {
         const data = {
           success: true,
-          msg: `Sistem Menu ${name} success to add`
+          msg: `Operator ${name} success to add`
         }
         res.send(data)
       } else {
         const data = {
           success: false,
-          msg: 'Sorry you cannot add this feature'
+          msg: 'Sorry you cannot add this featureS'
         }
         res.send(data)
       }
     } else {
       const data = {
-        succes: false,
+        idOperator: false,
         msg: 'Name of your input unknown'
       }
       res.send(data)
@@ -44,38 +46,30 @@ module.exports = {
   },
   update: async function (req, res) {
     const { id } = req.params
-    const { idOperator, name } = req.body
-    if (name.length > 60) {
+    const { name } = req.body
+    const results = await OperatorModel.updateOperator(id, name)
+    if (results) {
       const data = {
-        succes: false,
-        msg: 'your input too long, please input under 10 character'
+        success: true,
+        msg: `Name ${name} has been updated!`,
+        data: { id, ...req.body }
       }
       res.send(data)
     } else {
-      const results = await PaySistemModel.updatePaySistem(idOperator, name)
-      if (results) {
-        const data = {
-          success: true,
-          msg: `Name pay sistem ${name} has been updated!`,
-          data: { id, ...req.body }
-        }
-        res.send(data)
-      } else {
-        const data = {
-          success: false,
-          msg: 'There is no data can be updated'
-        }
-        res.send(data)
+      const data = {
+        success: false,
+        msg: 'There is no data can be updated'
       }
+      res.send(data)
     }
   },
   delete: async function (req, res) {
     const { id } = req.params
-    const results = await PaySistemModel.deletePaySistems(id)
+    const results = await OperatorModel.deleteOperator(id)
     if (results) {
       const data = {
         success: true,
-        msg: `Pay Sistem with id ${id} has been deleted!`
+        msg: `Operator name with id ${id} has been deleted!`
       }
       res.send(data)
     } else {
