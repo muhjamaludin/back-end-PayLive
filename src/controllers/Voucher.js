@@ -9,7 +9,6 @@ module.exports = {
     let key = search && Object.keys(search)[0]
     let value = search && Object.values(search)[0]
     search = (search && { key, value }) || { key: 'name', value: '' }
-    console.log(search)
 
     key = sort && Object.keys(sort)[0]
     value = sort && Object.values(sort)[0]

@@ -5,12 +5,13 @@ module.exports = {
     page = page || 1
     perPage = perPage || 5
     sort = sort || { key: 'nominal', value: 1 }
+    const sortValue = parseInt(sort.value)
     search = search || { key: 'name', value: '' }
     const table = 'vouchers'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}
                     WHERE ${search.key} LIKE '%${search.value}%'
-                    ORDER BY ${sort.key} ${sort.value ? 'ASC' : 'DESC'} 
+                    ORDER BY ${sort.key} ${sortValue ? 'ASC' : 'DESC'} 
                     LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
       db.query(query, function (err, results, fields) {
         console.log(query)
@@ -28,7 +29,7 @@ module.exports = {
     const table = 'vouchers'
     return new Promise(function (resolve, reject) {
       const query = `SELECT COUNT (*) AS total FROM ${table}
-                    WHERE ${search.key} LIKE '${search.value}%'`
+                    WHERE ${search.key} LIKE '%${search.value}%'`
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
