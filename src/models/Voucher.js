@@ -4,15 +4,16 @@ module.exports = {
     let { page, perPage, sort, search } = conditions
     page = page || 1
     perPage = perPage || 5
-    sort = sort || { key: 'id', value: '' }
+    sort = sort || { key: 'nominal', value: 1 }
     search = search || { key: 'name', value: '' }
     const table = 'vouchers'
     return new Promise(function (resolve, reject) {
       const query = `SELECT * FROM ${table}
-                    WHERE ${search.key} LIKE '${search.value}%'
+                    WHERE ${search.key} LIKE '%${search.value}%'
                     ORDER BY ${sort.key} ${sort.value ? 'ASC' : 'DESC'} 
                     LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
       db.query(query, function (err, results, fields) {
+        console.log(query)
         if (err) {
           reject(err)
         } else {
@@ -23,7 +24,7 @@ module.exports = {
   },
   getTotalVouchers: function (conditions = {}) {
     let { search } = conditions
-    search = search || { key: 'phone', value: '' }
+    search = search || { key: 'name', value: '' }
     const table = 'vouchers'
     return new Promise(function (resolve, reject) {
       const query = `SELECT COUNT (*) AS total FROM ${table}

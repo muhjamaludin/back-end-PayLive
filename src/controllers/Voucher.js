@@ -9,10 +9,11 @@ module.exports = {
     let key = search && Object.keys(search)[0]
     let value = search && Object.values(search)[0]
     search = (search && { key, value }) || { key: 'name', value: '' }
+    console.log(search)
 
     key = sort && Object.keys(sort)[0]
     value = sort && Object.values(sort)[0]
-    sort = (sort && { key, value }) || { key: 'id', value: 1 }
+    sort = (sort && { key, value }) || { key: 'nominal', value: 1 }
     const conditions = { page, perPage: limit, search, sort }
 
     const results = await VoucherModel.getAllVouchers(conditions)
