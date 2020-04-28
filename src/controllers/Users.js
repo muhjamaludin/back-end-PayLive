@@ -217,7 +217,8 @@ module.exports = {
       if (results) {
         const data = {
           success: true,
-          data: { idUser, ...results }
+          idUser: idUser,
+          data: results
         }
         res.send(data)
       } else {

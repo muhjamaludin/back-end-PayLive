@@ -350,8 +350,8 @@ module.exports = {
         if (err) {
           reject(err)
         } else {
-          if (results.length) {
-            resolve(results[0])
+          if (results) {
+            resolve(results)
           } else {
             resolve(false)
           }
