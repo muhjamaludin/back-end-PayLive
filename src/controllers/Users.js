@@ -137,6 +137,7 @@ module.exports = {
           res.send(data)
         } else {
           const result = await UserModel.topupBalance(idUser, topup)
+          await UserModel.insertHistory(idUser, topup)
           console.log(result)
           if (result) {
             const data = {
@@ -179,6 +180,7 @@ module.exports = {
       const { idUserReceiver, amount } = req.body
       await UserModel.transferCash(idUserReceiver, amount)
       const results = await UserModel.getCashTransfer(idUser, amount)
+      await UserModel.insertHistoryTransfer(idUser, amount)
       console.log(idUser)
       // if (amount > cash )
       // const results = UserModel.getCashTransfer(idUser, amount)
@@ -203,14 +205,15 @@ module.exports = {
   },
   getHistory: async function (req, res) {
     const { idUser } = req.params
-    const results = await UserModel.getHistory(idUser)
-    if (results.name_transaction === 'REGISTER') {
+    const count = await UserModel.getAllHistory(idUser)
+    if (count.total === 0) {
       const data = {
         success: false,
         msg: 'No data'
       }
       res.send(data)
     } else {
+      const results = await UserModel.getHistory(idUser)
       if (results) {
         const data = {
           success: true,

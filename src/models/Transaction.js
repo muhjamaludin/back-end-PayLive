@@ -153,5 +153,8 @@ module.exports = {
         }
       })
     })
+  },
+  historyPurchase: function (idUser, idNominal) {
+    const nominal = 
   }
 }

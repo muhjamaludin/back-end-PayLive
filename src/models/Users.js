@@ -149,6 +149,24 @@ module.exports = {
       })
     })
   },
+  insertHistory: function (idUser, balance) {
+    const table = 'history'
+    return new Promise(function (resolve, reject) {
+      const query = `INSERT INTO ${table} (id_user, name_transaction, balance) VALUES (${idUser}, 'TOP UP', ${balance})`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
   deleteUser: function (id) {
     const table = 'users'
     return new Promise(function (resolve, reject) {
@@ -306,6 +324,24 @@ module.exports = {
       })
     })
   },
+  insertHistoryTransfer: function (idUser, amount) {
+    const table = 'history'
+    return new Promise(function (resolve, reject) {
+      const query = `INSERT INTO ${table} (id_user, name_transaction, balance) VALUES (${idUser}, 'Transfer', ${amount})`
+      console.log(query)
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
   getHistory: function (idUser) {
     const table = 'history'
     const query = `SELECT name_transaction, balance from ${table} where id_user=${idUser}`
@@ -315,6 +351,23 @@ module.exports = {
           reject(err)
         } else {
           if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
+  getAllHistory: function (idUser) {
+    const table = 'history'
+    const query = `SELECT count(*) AS total from ${table} where id_user=${idUser}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results) {
             resolve(results[0])
           } else {
             resolve(false)
