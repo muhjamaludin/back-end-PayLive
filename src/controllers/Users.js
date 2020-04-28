@@ -200,5 +200,30 @@ module.exports = {
     } catch (err) {
       console.log(err)
     }
-  }
+  },
+  getHistory: async function (req, res) {
+    const { idUser } = req.params
+    const results = await UserModel.getHistory(idUser)
+    if (results.name_transaction === 'REGISTER') {
+      const data = {
+        success: false,
+        msg: 'No data'
+      }
+      res.send(data)
+    } else {
+      if (results) {
+        const data = {
+          success: true,
+          data: { idUser, ...results }
+        }
+        res.send(data)
+      } else {
+        const data = {
+          success: false,
+          msg: 'There is no data for your request'
+        }
+        res.send(data)
+      }
+    }
+  },
 }

@@ -186,7 +186,7 @@ module.exports = {
     })
   },
   getUserById: function (id) {
-    const table = 'user_details'
+    const table = 'users'
     const query = `SELECT * FROM ${table} WHERE id_user=${id}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
@@ -305,5 +305,22 @@ module.exports = {
         }
       })
     })
-  }
+  },
+  getHistory: function (idUser) {
+    const table = 'history'
+    const query = `SELECT name_transaction, balance from ${table} where id_user=${idUser}`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.length) {
+            resolve(results[0])
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
 }

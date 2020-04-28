@@ -26,6 +26,7 @@ module.exports = {
           const results = await UserModel.createUser(phone)
           const info = await AuthModel.getUserByPhone(phone)
           await UserdModel.createUserDetail(info.id, fullname, email)
+          await UserdModel.createHistory(info.id)
           if (results) {
             if (await AuthModel.createVerificationCode(results, uuid().slice(1, 5))) {
               const code = await AuthModel.getVerificationCode(phone)

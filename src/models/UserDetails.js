@@ -126,5 +126,23 @@ module.exports = {
         }
       })
     })
+  },
+  createHistory: function (idUser) {
+    const table = 'history'
+    const query = `INSERT INTO ${table} (id_user) VALUES (${idUser})`
+    return new Promise(function (resolve, reject) {
+      db.query(query, function (err, results, fields) {
+        console.log(query)
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
   }
 }

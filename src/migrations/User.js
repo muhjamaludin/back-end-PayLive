@@ -36,3 +36,14 @@ db.query(`
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
   )
 `, check)
+
+db.query(`
+  CREATE TABLE IF NOT EXISTS history(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_user INT(5) NOT NULL,
+    name_transaction VARCHAR(30) DEFAULT 'REGISTER',
+    balance INT(10) DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP
+  )
+`, check)
