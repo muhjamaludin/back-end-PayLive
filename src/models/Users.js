@@ -205,7 +205,7 @@ module.exports = {
   },
   getUserById: function (id) {
     const table = 'users'
-    const query = `SELECT * FROM ${table} WHERE id_user=${id}`
+    const query = `SELECT * FROM ${table} WHERE id=${id}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -254,34 +254,48 @@ module.exports = {
       })
     })
   },
-  transferCash: function (idUserReceiver, amount) {
+  transferCash: function (phone, amount) {
     const table = 'user_details'
-    const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
+    const queryPhone = `SELECT id FROM users WHERE phone=${phone}`
     return new Promise(function (resolve, reject) {
-      db.query(query, function (err, results, fields) {
+      db.query(queryPhone, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
           if (results) {
-            const cashReceiver = results[0].cash
-            const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
-            db.query(query1, function (err, results, fields) {
-              if (err) {
-                reject(err)
-              } else {
-                if (results) {
-                  resolve(results)
+            const idUserReceiver = results[0].id
+            const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
+            return new Promise(function (resolve, reject) {
+              db.query(query, function (err, results, fields) {
+                if (err) {
+                  reject(err)
                 } else {
-                  resolve(false)
+                  if (results) {
+                    const cashReceiver = results[0].cash
+                    const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
+                    db.query(query1, function (err, results, fields) {
+                      if (err) {
+                        reject(err)
+                      } else {
+                        if (results) {
+                          resolve(results)
+                        } else {
+                          resolve(false)
+                        }
+                      }
+                    })
+                  } else {
+                    resolve(false)
+                  }
                 }
-              }
+              })
             })
-          } else {
-            resolve(false)
           }
         }
       })
     })
+
+
   },
   getCashTransfer: function (idUser, amount) {
     const table = 'user_details'
