@@ -255,7 +255,6 @@ module.exports = {
     })
   },
   transferCash: function (phone, amount) {
-    const table = 'user_details'
     const queryPhone = `SELECT id FROM users WHERE phone=${phone}`
     return new Promise(function (resolve, reject) {
       db.query(queryPhone, function (err, results, fields) {
@@ -263,6 +262,7 @@ module.exports = {
           reject(err)
         } else {
           if (results) {
+            const table = 'user_details'
             const idUserReceiver = results[0].id
             const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
             return new Promise(function (resolve, reject) {
@@ -278,6 +278,7 @@ module.exports = {
                         reject(err)
                       } else {
                         if (results) {
+                          console.log(results)
                           resolve(results)
                         } else {
                           resolve(false)
@@ -320,7 +321,7 @@ module.exports = {
                     } else {
                       if (results) {
                         resolve(results)
-                        console.log(results)
+                        console.log(results[0].cash)
                       } else {
                         resolve(false)
                       }

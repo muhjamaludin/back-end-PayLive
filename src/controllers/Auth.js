@@ -2,6 +2,7 @@
 const AuthModel = require('../models/Auth')
 const UserModel = require('../models/Users')
 const UserdModel = require('../models/UserDetails')
+require('dotenv').config()
 // package
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -126,7 +127,6 @@ module.exports = {
               token,
               msg: 'Let\'s go Home with token',
               id_user: id
-
             }
             res.send(data)
           } else {
