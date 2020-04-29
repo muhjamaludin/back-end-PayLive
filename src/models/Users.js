@@ -344,7 +344,7 @@ module.exports = {
   },
   getHistory: function (idUser) {
     const table = 'history'
-    const query = `SELECT name_transaction, balance, created_at from ${table} where id_user=${idUser}`
+    const query = `SELECT name_transaction, balance, created_at from ${table} where id_user=${idUser} ORDER BY created_at DESC`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
