@@ -228,16 +228,15 @@ module.exports = {
 
     let key = search && Object.keys(search)[0]
     let value = search && Object.values(search)[0]
-    search = (search && { key, value }) || { key: 'phone', value: '' }
+    search = (search && { key, value }) || { key: 'name_transaction', value: '' }
 
     key = sort && Object.keys(sort)[0]
     value = sort && Object.values(sort)[0]
-    sort = (sort && { key, value }) || { key: 'id', value: 1 }
+    sort = (sort && { key, value }) || { key: 'created_at', value: 1 }
     const conditions = { page, perPage: limit, search, sort }
     const { idUser } = req.params
     const results = await UserModel.getHistory(conditions, idUser)
-    const totalData = await UserModel.getAllHistory(idUser)
-    console.log('total data', totalData)
+    const totalData = await UserModel.getAllHistory(conditions, idUser)
     conditions.totalData = totalData.total
     conditions.totalPage = Math.ceil(conditions.totalData / conditions.perPage)
     conditions.nextLink =

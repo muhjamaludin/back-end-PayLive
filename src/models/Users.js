@@ -362,18 +362,19 @@ module.exports = {
   },
   getHistory: function (conditions = {}, idUser) {
     let { page, perPage, sort, search } = conditions
-    sort = sort || { key: 'id', value: 1 }
+    // sort = sort || { key: 'created_at', value: 1 }
+    search = search || { key: 'name_transaction', value: 'TOP UP' }
     const table = 'history'
     const query = `SELECT name_transaction, balance, created_at from ${table} 
-    where id_user=${idUser} ORDER BY created_at DESC
-    LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
+    where id_user=${idUser} && ${search.key} LIKE '${search.value}%' ORDER BY ${sort.key} 
+    ${parseInt(sort.value) ? 'DESC' : 'ASC'} LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
+        console.log(query)
         if (err) {
           reject(err)
         } else {
           if (results) {
-            console.log('results', results)
             resolve(results)
           } else {
             resolve(false)
@@ -382,10 +383,12 @@ module.exports = {
       })
     })
   },
-  getAllHistory: function (idUser) {
+  getAllHistory: function (conditions = {}, idUser) {
+    let { search } = conditions
     const table = 'history'
-    const query = `SELECT count(*) AS total from ${table} 
-    where id_user=${idUser}`
+    search = search || { key: 'name_transaction', value: 'TOP UP' }
+    const query = `SELECT COUNT(*) AS total from ${table} 
+    where id_user=${idUser} && ${search.key} LIKE '${search.value}%'`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         console.log(query)
