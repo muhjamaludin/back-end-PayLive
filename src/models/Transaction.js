@@ -84,7 +84,7 @@ module.exports = {
     const table = 'nominals'
     const join = 'transactions'
     return new Promise(function (resolve, reject) {
-      const query = `SELECT (${table}.nominal + ${join}.add_price) AS 'Total Price' FROM ${table} 
+      const query = `SELECT (${table}.nominal + ${join}.add_price) AS 'Total Price' FROM ${table}
                     JOIN ${join} ON ${table}.id=${join}.nominal_id WHERE ${table}.id=${idNominal}`
       console.log(query)
       db.query(query, function (err, results, fields) {
@@ -154,7 +154,21 @@ module.exports = {
       })
     })
   },
-  // historyPurchase: function (idUser, idNominal) {
-  //   const nominal = 
-  // }
+  historyPurchase: function (idNominal) {
+    const table = 'nominals'
+    return new Promise(function (resolve, reject) {
+      const query = `INSERT INTO ${table} (id_category, nominal) VALUES (${idNominal}, 'PURCHASE')`
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results.affectedRows) {
+            resolve(true)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
 }

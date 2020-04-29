@@ -89,7 +89,7 @@ module.exports = {
     })
   },
   updateUserDetails: function (idUser, picture, fullname, email) {
-    picture = (typeof picture === 'string' ? `'${picture}'` : picture)
+    picture = typeof picture === 'string' ? `'${picture}'` : picture
     const table = 'user_details'
     return new Promise(function (resolve, reject) {
       const query = `UPDATE ${table} SET fullname='${fullname}', email='${email}', profile_picture=${picture} WHERE id_user=${idUser}`
@@ -116,8 +116,8 @@ module.exports = {
           reject(err)
         } else {
           if (results) {
-            let cash = (results[0].cash)
-            cash = cash === null ? cash = 0 : cash = `${cash}`
+            let cash = results[0].cash
+            cash = cash === null ? (cash = 0) : (cash = `${cash}`)
             const query1 = `UPDATE ${table} SET cash= (${topup} + ${cash}) WHERE id_user=${idUser}`
             console.log(query1)
             db.query(query1, function (err, result, fields) {
@@ -342,16 +342,24 @@ module.exports = {
       })
     })
   },
-  getHistory: function (idUser) {
+  getHistory: function (conditions = {}, idUser) {
+    let { page, perPage, sort, search } = conditions
+    sort = sort || { key: 'id', value: 1 }
+    search = search || { key: '', value: '' }
+
     const table = 'history'
-    const query = `SELECT name_transaction, balance from ${table} where id_user=${idUser}`
+    const query = `SELECT name_transaction, balance, created_at from ${table} 
+    where id_user=${idUser}
+    ORDER BY history.id ${sort.value ? 'ASC' : 'DESC'}
+    LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
-          if (results.length) {
-            resolve(results[0])
+          if (results) {
+            console.log('results', results)
+            resolve(results)
           } else {
             resolve(false)
           }
@@ -361,9 +369,11 @@ module.exports = {
   },
   getAllHistory: function (idUser) {
     const table = 'history'
-    const query = `SELECT count(*) AS total from ${table} where id_user=${idUser}`
+    const query = `SELECT count(*) AS total from ${table} 
+    where id_user=${idUser}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
+        console.log(query)
         if (err) {
           reject(err)
         } else {
