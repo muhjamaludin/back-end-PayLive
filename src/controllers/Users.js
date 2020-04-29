@@ -182,13 +182,8 @@ module.exports = {
   transfer: async function (req, res) {
     try {
       const { idUser } = req.params
-<<<<<<< HEAD
-      const { phoneReceiver, amount } = req.body
-      await UserModel.transferCash(phoneReceiver, amount)
-=======
       const { phone, amount } = req.body
       await UserModel.transferCash(phone, amount)
->>>>>>> f7e71c3ac383d685ec1780d0f47e4e39c47001b5
       const results = await UserModel.getCashTransfer(idUser, amount)
       await UserModel.insertHistoryTransfer(idUser, amount)
       console.log(idUser)
