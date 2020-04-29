@@ -294,8 +294,6 @@ module.exports = {
         }
       })
     })
-
-
   },
   getCashTransfer: function (idUser, amount) {
     const table = 'user_details'
@@ -396,5 +394,5 @@ module.exports = {
         }
       })
     })
-  },
+  }
 }
