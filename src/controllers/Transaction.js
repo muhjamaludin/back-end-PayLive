@@ -94,31 +94,39 @@ module.exports = {
       const { idUser } = req.params
       const { amount } = req.body
       const nominal = parseInt(amount)
-      const cash = await UserModel.getCash(idUser)
-      console.log(cash.cash, nominal)
-      // await TransactionModel.insertHistoryPurchase(amount)
-      if (cash.cash < nominal) {
+      if (nominal < 0) {
         const data = {
           success: false,
-          msg: 'Your cash not enough to get this request'
+          msg: 'wrong input price'
         }
         res.send(data)
       } else {
-        const results = await TransactionModel.payTransaction(idUser, amount)
-        if (results) {
+        const cash = await UserModel.getCash(idUser)
+        // await TransactionModel.insertHistoryPurchase(amount)
+        if (cash.cash < nominal) {
           const data = {
-            success: true,
-            msg: 'Thank you for Your Purchase, Please enjoy our products',
-            data: { idUser, cash: results }
+            success: false,
+            msg: 'Your cash not enough to get this request'
           }
           res.send(data)
         } else {
-          const data = {
-            success: false,
-            msg: 'Failed Operation'
+          const results = await TransactionModel.payTransaction(idUser, amount)
+          if (results) {
+            const data = {
+              success: true,
+              msg: 'Thank you for Your Purchase, Please enjoy our products',
+              data: { idUser, cash: results }
+            }
+            res.send(data)
+          } else {
+            const data = {
+              success: false,
+              msg: 'Failed Operation'
+            }
           }
         }
       }
+
     } catch (err) {
       console.log(err)
     }

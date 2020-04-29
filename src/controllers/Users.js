@@ -182,31 +182,39 @@ module.exports = {
     try {
       const { idUser } = req.params
       const { phone, amount } = req.body
-      const balance = await UserModel.getCash(idUser)
-      if ((balance.cash - amount) < 10000) {
+      if (amount < 5000) {
         const data = {
           success: false,
-          msg: 'Transfer with balance under Rp10.000,00 not allowed'
+          msg: 'Minimun transfer is 5000'
         }
         res.send(data)
       } else {
-        const results = await UserModel.getCashTransfer(idUser, amount)
-        const receive = await UserModel.transferCash(phone, amount)
-        await UserModel.insertHistoryTransfer(idUser, amount)
-        if (results) {
+        const balance = await UserModel.getCash(idUser)
+        if ((balance.cash - amount) < 10000) {
           const data = {
-            success: true,
-            msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
-            dataCashUser: results[0].cash,
-            dataCashReceiver: receive[0].cash
+            success: false,
+            msg: 'Transfer with balance under Rp10.000,00 not allowed'
           }
           res.send(data)
         } else {
-          const data = {
-            success: false,
-            msg: 'Your access has been wrong input'
+          const results = await UserModel.getCashTransfer(idUser, amount)
+          const receive = await UserModel.transferCash(phone, amount)
+          await UserModel.insertHistoryTransfer(idUser, amount)
+          if (results) {
+            const data = {
+              success: true,
+              msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
+              dataCashUser: results[0].cash,
+              dataCashReceiver: receive[0].cash
+            }
+            res.send(data)
+          } else {
+            const data = {
+              success: false,
+              msg: 'Your access has been wrong input'
+            }
+            res.send(data)
           }
-          res.send(data)
         }
       }
     } catch (err) {
