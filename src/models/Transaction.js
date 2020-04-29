@@ -154,8 +154,8 @@ module.exports = {
       })
     })
   },
-  historyPurchase: function (idNominal) {
-    const table = 'nominals'
+  insertHistoryPurchase: function (idNominal) {
+    const table = 'history'
     return new Promise(function (resolve, reject) {
       const query = `INSERT INTO ${table} (id_category, nominal) VALUES (${idNominal}, 'PURCHASE')`
       db.query(query, function (err, results, fields) {

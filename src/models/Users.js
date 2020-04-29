@@ -254,9 +254,9 @@ module.exports = {
       })
     })
   },
-  transferCash: function (idUserReceiver, amount) {
+  transferCash: function (phoneReceiver, amount) {
     const table = 'user_details'
-    const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
+    const query = `SELECT cash from ${table} where id_user=${phoneReceiver}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -264,7 +264,7 @@ module.exports = {
         } else {
           if (results) {
             const cashReceiver = results[0].cash
-            const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
+            const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${phoneReceiver}`
             db.query(query1, function (err, results, fields) {
               if (err) {
                 reject(err)

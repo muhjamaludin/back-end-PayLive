@@ -54,6 +54,7 @@ module.exports = {
       console.log(req.file)
       const { id } = req.params
       const { fullname, phone, email } = req.body
+      console.log(fullname, phone, email)
       const picture = (req.file && req.file.filename) || 'ayam'
       const idUser = id
       console.log(idUser, fullname, email, phone)
@@ -181,8 +182,8 @@ module.exports = {
   transfer: async function (req, res) {
     try {
       const { idUser } = req.params
-      const { idUserReceiver, amount } = req.body
-      await UserModel.transferCash(idUserReceiver, amount)
+      const { phoneReceiver, amount } = req.body
+      await UserModel.transferCash(phoneReceiver, amount)
       const results = await UserModel.getCashTransfer(idUser, amount)
       await UserModel.insertHistoryTransfer(idUser, amount)
       console.log(idUser)
