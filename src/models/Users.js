@@ -324,7 +324,7 @@ module.exports = {
                     } else {
                       if (results) {
                         resolve(results)
-                        console.log(results[0].cash)
+                        console.log('mine balance', results[0].cash)
                       } else {
                         resolve(false)
                       }
