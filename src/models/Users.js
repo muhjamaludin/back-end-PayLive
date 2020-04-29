@@ -264,35 +264,36 @@ module.exports = {
           if (results) {
             const table = 'user_details'
             const idUserReceiver = results[0].id
-            const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
-            return new Promise(function (resolve, reject) {
-              db.query(query, function (err, results, fields) {
-                if (err) {
-                  reject(err)
+            const kuery = `SELECT cash from user_details where id_user=${idUserReceiver}`
+            db.query(kuery, function (err, results, fields) {
+              console.log(kuery)
+              if (err) {
+                reject(err)
+              } else {
+                if (results) {
+                  resolve(results)
+                  console.log(results)
+                  const cashReceiver = results[0].cash
+                  const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
+                  db.query(query1, function (err, results, fields) {
+                    if (err) {
+                      reject(err)
+                    } else {
+                      if (results) {
+                        console.log(results)
+                        resolve(results)
+                      } else {
+                        resolve(false)
+                      }
+                    }
+                  })
+
                 } else {
-                  if (results) {
-                    const cashReceiver = results[0].cash
-                    const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
-                    return new Promise(function (resolve, reject) {
-                      db.query(query1, function (err, results, fields) {
-                        if (err) {
-                          reject(err)
-                        } else {
-                          if (results) {
-                            console.log(results)
-                            resolve(results)
-                          } else {
-                            resolve(false)
-                          }
-                        }
-                      })
-                    })
-                  } else {
-                    resolve(false)
-                  }
+                  resolve(false)
                 }
-              })
+              }
             })
+
           }
         }
       })
