@@ -45,7 +45,7 @@ module.exports = {
   getDetails: async function (req, res) {
     const data = {
       success: true,
-      data: await UserModel.getUserById(req.params.id),
+      data: await UserModel.getDetailsById(req.params.id),
     }
     res.send(data)
   },
@@ -181,8 +181,8 @@ module.exports = {
   transfer: async function (req, res) {
     try {
       const { idUser } = req.params
-      const { idUserReceiver, amount } = req.body
-      await UserModel.transferCash(idUserReceiver, amount)
+      const { phone, amount } = req.body
+      await UserModel.transferCash(phone, amount)
       const results = await UserModel.getCashTransfer(idUser, amount)
       await UserModel.insertHistoryTransfer(idUser, amount)
       console.log(idUser)
@@ -193,7 +193,7 @@ module.exports = {
         const data = {
           success: true,
           msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
-          data: { idUser, ...results },
+          data: { idUser, results },
         }
         res.send(data)
       } else {
