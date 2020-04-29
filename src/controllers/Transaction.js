@@ -92,14 +92,14 @@ module.exports = {
   purchase: async function (req, res) {
     try {
       const { idUser } = req.params
-      const { idNominal } = req.body
-      const results = await TransactionModel.payTransaction(idUser, idNominal)
+      const { amount } = req.body
+      const results = await TransactionModel.payTransaction(idUser, amount)
       // const purchase =
       if (results) {
         const data = {
           success: true,
           msg: 'Thank you for Your Purchase, Please enjoy our products',
-          data: { idUser, cash: results[0].cash }
+          data: { idUser, cash: results }
         }
         res.send(data)
       }

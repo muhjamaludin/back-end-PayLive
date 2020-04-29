@@ -345,12 +345,9 @@ module.exports = {
   getHistory: function (conditions = {}, idUser) {
     let { page, perPage, sort, search } = conditions
     sort = sort || { key: 'id', value: 1 }
-    search = search || { key: '', value: '' }
-
     const table = 'history'
     const query = `SELECT name_transaction, balance, created_at from ${table} 
-    where id_user=${idUser}
-    ORDER BY history.id ${sort.value ? 'ASC' : 'DESC'}
+    where id_user=${idUser} ORDER BY created_at DESC
     LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
