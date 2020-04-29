@@ -52,6 +52,6 @@ app.use((err, req, res, next) => {
 })
 
 // base url & PORT
-app.listen('0.0.0.0', process.env.PORT, (req, res) => {
+app.listen(process.env.PORT, '0.0.0.0', (req, res) => {
   console.log(`APP listen on ${process.env.PORT}`)
 })
