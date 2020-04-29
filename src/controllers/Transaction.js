@@ -1,5 +1,5 @@
 const TransactionModel = require('../models/Transaction')
-// const UserModel = require('../models/Users')
+const UserModel = require('../models/Users')
 
 module.exports = {
   read: async function (req, res) {
@@ -93,15 +93,31 @@ module.exports = {
     try {
       const { idUser } = req.params
       const { amount } = req.body
-      const results = await TransactionModel.payTransaction(idUser, amount)
+      const nominal = parseInt(amount)
+      const cash = await UserModel.getCash(idUser)
+      console.log(cash.cash, nominal)
       // await TransactionModel.insertHistoryPurchase(amount)
-      if (results) {
+      if (cash.cash < nominal) {
         const data = {
-          success: true,
-          msg: 'Thank you for Your Purchase, Please enjoy our products',
-          data: { idUser, cash: results }
+          success: false,
+          msg: 'Your cash not enough to get this request'
         }
         res.send(data)
+      } else {
+        const results = await TransactionModel.payTransaction(idUser, amount)
+        if (results) {
+          const data = {
+            success: true,
+            msg: 'Thank you for Your Purchase, Please enjoy our products',
+            data: { idUser, cash: results }
+          }
+          res.send(data)
+        } else {
+          const data = {
+            success: false,
+            msg: 'Failed Operation'
+          }
+        }
       }
     } catch (err) {
       console.log(err)

@@ -273,17 +273,19 @@ module.exports = {
                   if (results) {
                     const cashReceiver = results[0].cash
                     const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
-                    db.query(query1, function (err, results, fields) {
-                      if (err) {
-                        reject(err)
-                      } else {
-                        if (results) {
-                          console.log(results)
-                          resolve(results)
+                    return new Promise(function (resolve, reject) {
+                      db.query(query1, function (err, results, fields) {
+                        if (err) {
+                          reject(err)
                         } else {
-                          resolve(false)
+                          if (results) {
+                            console.log(results)
+                            resolve(results)
+                          } else {
+                            resolve(false)
+                          }
                         }
-                      }
+                      })
                     })
                   } else {
                     resolve(false)

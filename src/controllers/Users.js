@@ -183,14 +183,13 @@ module.exports = {
     const { idUser } = req.params
     const { phone, amount } = req.body
     const results = await UserModel.getCashTransfer(idUser, amount)
-    // const hasil = await UserModel.transferCash(phone, amount)
+    // await UserModel.transferCash(phone, amount)
     await UserModel.insertHistoryTransfer(idUser, amount)
     if (results) {
       const data = {
         success: true,
         msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
-        dataCashUser: results[0],
-        // dataCashLawan: hasil[0]
+        dataCashUser: results[0]
       }
       res.send(data)
     } else {
