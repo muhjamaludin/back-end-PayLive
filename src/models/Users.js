@@ -205,7 +205,7 @@ module.exports = {
   },
   getUserById: function (id) {
     const table = 'users'
-    const query = `SELECT * FROM ${table} WHERE id_user=${id}`
+    const query = `SELECT * FROM ${table} WHERE id=${id}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
         if (err) {
@@ -254,15 +254,22 @@ module.exports = {
       })
     })
   },
+<<<<<<< HEAD
   transferCash: function (phoneReceiver, amount) {
     const table = 'user_details'
     const query = `SELECT cash from ${table} where id_user=${phoneReceiver}`
+=======
+  transferCash: function (phone, amount) {
+    const table = 'user_details'
+    const queryPhone = `SELECT id FROM users WHERE phone=${phone}`
+>>>>>>> f7e71c3ac383d685ec1780d0f47e4e39c47001b5
     return new Promise(function (resolve, reject) {
-      db.query(query, function (err, results, fields) {
+      db.query(queryPhone, function (err, results, fields) {
         if (err) {
           reject(err)
         } else {
           if (results) {
+<<<<<<< HEAD
             const cashReceiver = results[0].cash
             const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${phoneReceiver}`
             db.query(query1, function (err, results, fields) {
@@ -271,17 +278,41 @@ module.exports = {
               } else {
                 if (results) {
                   resolve(results)
+=======
+            const idUserReceiver = results[0].id
+            const query = `SELECT cash from ${table} where id_user=${idUserReceiver}`
+            return new Promise(function (resolve, reject) {
+              db.query(query, function (err, results, fields) {
+                if (err) {
+                  reject(err)
+>>>>>>> f7e71c3ac383d685ec1780d0f47e4e39c47001b5
                 } else {
-                  resolve(false)
+                  if (results) {
+                    const cashReceiver = results[0].cash
+                    const query1 = `UPDATE ${table} SET cash = (${cashReceiver} + ${amount}) WHERE id_user=${idUserReceiver}`
+                    db.query(query1, function (err, results, fields) {
+                      if (err) {
+                        reject(err)
+                      } else {
+                        if (results) {
+                          resolve(results)
+                        } else {
+                          resolve(false)
+                        }
+                      }
+                    })
+                  } else {
+                    resolve(false)
+                  }
                 }
-              }
+              })
             })
-          } else {
-            resolve(false)
           }
         }
       })
     })
+
+
   },
   getCashTransfer: function (idUser, amount) {
     const table = 'user_details'
@@ -345,12 +376,9 @@ module.exports = {
   getHistory: function (conditions = {}, idUser) {
     let { page, perPage, sort, search } = conditions
     sort = sort || { key: 'id', value: 1 }
-    search = search || { key: '', value: '' }
-
     const table = 'history'
     const query = `SELECT name_transaction, balance, created_at from ${table} 
-    where id_user=${idUser}
-    ORDER BY history.id ${sort.value ? 'ASC' : 'DESC'}
+    where id_user=${idUser} ORDER BY created_at DESC
     LIMIT ${perPage} OFFSET ${(page - 1) * perPage}`
     return new Promise(function (resolve, reject) {
       db.query(query, function (err, results, fields) {
