@@ -154,7 +154,7 @@ module.exports = {
       })
     })
   },
-  historyPurchase: function (idUser, idNominal) {
-    const nominal = 
-  }
+  // historyPurchase: function (idUser, idNominal) {
+  //   const nominal = 
+  // }
 }
