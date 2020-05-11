@@ -12,7 +12,8 @@ Users.patch('/upload/:idUser', upload.single('picture'), UserControllers.uploadP
 
 Users.patch('/topup/:idUser', UserControllers.topup) // topu-up balance
 Users.get('/balance/:idUser', UserControllers.getCash)
-Users.post('/transfer/:idUser', UserControllers.transfer) // transfer
+Users.get('/balance/history/:idUser', UserControllers.getHistory)
+Users.post('/transfer/:idUser', UserControllers.transferMoney) // transfer
 Users.get('/price/:idUser', TransactionControllers.totalPrice)
 
 module.exports = Users

@@ -2,6 +2,7 @@
 const AuthModel = require('../models/Auth')
 const UserModel = require('../models/Users')
 const UserdModel = require('../models/UserDetails')
+require('dotenv').config()
 // package
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -126,7 +127,6 @@ module.exports = {
               token,
               msg: 'Let\'s go Home with token',
               id_user: id
-
             }
             res.send(data)
           } else {
@@ -223,4 +223,30 @@ module.exports = {
       }
     }
   }
+  // forgotEmail: async function (req, res) {
+  //   try {
+  //     const check = await AuthModel.checkEmail(req.body.email)
+  //     const dataUser = check[0]
+  //     const currentCode = uuid().slice(0, 5)
+  //     const idUser = dataUser.id_user
+  //     if (dataUser === undefined) {
+  //       const data = {
+  //         success: false,
+  //         msg: 'Your email doesn\'t registered'
+  //       }
+  //       return res.send(data)
+  //     } else {
+  //       const emailUser = { email: dataUser.email, code: currentCode }
+  //       await AuthModel.forgotEmail(emailUser)
+  //       await MailSend.forgotEmail(emailUser)
+  //       const data = {
+  //         success: true,
+  //         msg: 'Check your email to set new code'
+  //       }
+  //       res.send(data)
+  //     }
+  //   } catch (error) {
+  //     return console.log('Failed')
+  //   }
+  // }
 }

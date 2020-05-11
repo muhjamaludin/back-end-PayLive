@@ -15,14 +15,14 @@ Transactions.delete('/point/:id', CashPointControllers.delete) // delete cash po
 
 // category
 Transactions.get('/category', CategoryControllers.read)
-Transactions.get('/category/:id', CategoryControllers.readById)
+Transactions.post('/category/:id', CategoryControllers.readById)
 Transactions.post('/category', CategoryControllers.create)
 Transactions.patch('/category/:id', CategoryControllers.update)
 Transactions.delete('/category/:id', CategoryControllers.delete)
 
 // operator
 Transactions.get('/operator', OperatorControllers.read)
-Transactions.get('/operator/:id', OperatorControllers.readById)
+Transactions.post('/operator/:id', OperatorControllers.readById)
 Transactions.post('/operator', OperatorControllers.create)
 Transactions.patch('/operator/:id', OperatorControllers.update)
 Transactions.delete('/operator/:id', OperatorControllers.delete)
@@ -36,14 +36,14 @@ Transactions.delete('/paysistem/:id', PaySistemControllers.delete)
 
 // nominal
 Transactions.get('/nominal', NominalControllers.read)
-Transactions.get('/nominal/:id', NominalControllers.readById)
+Transactions.post('/nominal/:id', NominalControllers.readById)
 Transactions.post('/nominal', NominalControllers.create)
 Transactions.patch('/nominal/:id', NominalControllers.update)
 Transactions.delete('/nominal/:id', NominalControllers.delete)
 
 // Transaction
 Transactions.post('/pay', TransactionControllers.create)
-Transactions.get('/pay', TransactionControllers.read)
+Transactions.post('/pay', TransactionControllers.read)
 Transactions.get('/pay/:id', TransactionControllers.readById)
 Transactions.patch('/pay/:id', TransactionControllers.update)
 Transactions.delete('/pay/:id', TransactionControllers.delete)

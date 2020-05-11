@@ -170,5 +170,22 @@ module.exports = {
         }
       })
     })
-  }
+  },
+  checkEmail: async function (email) {
+    const table = 'user_details'
+    const query = `SELECT * FROM ${table} WHERE email = ${email}`
+    return new Promise((resolve, reject) => {
+      db.query(query, function (err, results, fields) {
+        if (err) {
+          reject(err)
+        } else {
+          if (results) {
+            resolve(results)
+          } else {
+            resolve(false)
+          }
+        }
+      })
+    })
+  },
 }

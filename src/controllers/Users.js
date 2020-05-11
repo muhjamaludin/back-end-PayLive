@@ -18,8 +18,12 @@ module.exports = {
     const results = await UserModel.getAllUsers(conditions)
     conditions.totalData = await UserModel.getTotalUsers(conditions)
     conditions.totalPage = Math.ceil(conditions.totalData / conditions.perPage)
-    conditions.nextLink = (page >= conditions.totalPage ? null : process.env.APP_URI.concat(`users?page=${page + 1}`))
-    conditions.prevLink = (page <= 1 ? null : process.env.APP_URI.concat(`users?page=${page - 1}`))
+    conditions.nextLink =
+      page >= conditions.totalPage
+        ? null
+        : process.env.APP_URI.concat(`users?page=${page + 1}`)
+    conditions.prevLink =
+      page <= 1 ? null : process.env.APP_URI.concat(`users?page=${page - 1}`)
     delete conditions.search
     delete conditions.sort
     delete conditions.limit
@@ -41,7 +45,7 @@ module.exports = {
   getDetails: async function (req, res) {
     const data = {
       success: true,
-      data: await UserModel.getUserById(req.params.id)
+      data: await UserModel.getDetailsById(req.params.id)
     }
     res.send(data)
   },
@@ -137,6 +141,7 @@ module.exports = {
           res.send(data)
         } else {
           const result = await UserModel.topupBalance(idUser, topup)
+          await UserModel.insertHistory(idUser, topup)
           console.log(result)
           if (result) {
             const data = {
@@ -173,32 +178,108 @@ module.exports = {
       res.send(data)
     }
   },
-  transfer: async function (req, res) {
+  transferMoney: async function (req, res) {
     try {
       const { idUser } = req.params
-      const { idUserReceiver, amount } = req.body
-      await UserModel.transferCash(idUserReceiver, amount)
-      const results = await UserModel.getCashTransfer(idUser, amount)
-      console.log(idUser)
-      // if (amount > cash )
-      // const results = UserModel.getCashTransfer(idUser, amount)
-      // await UserModel.topupBalance(idUserReceiver, amount)
-      if (results) {
+      const { phone, amount } = req.body
+      if (amount < 5000) {
         const data = {
-          success: true,
-          msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
-          data: { idUser, ...results }
+          success: false,
+          msg: 'Minimun transfer is 5000'
         }
         res.send(data)
       } else {
-        const data = {
-          success: false,
-          msg: 'Your access has been wrong input'
+        const balance = await UserModel.getCash(idUser)
+        if ((balance.cash - amount) < 10000) {
+          const data = {
+            success: false,
+            msg: 'Transfer with balance under Rp10.000,00 not allowed'
+          }
+          res.send(data)
+        } else {
+          const results = await UserModel.getCashTransfer(idUser, amount)
+          const receive = await UserModel.transferCash(phone, amount)
+          await UserModel.insertHistoryTransfer(idUser, amount)
+          if (results) {
+            const data = {
+              success: true,
+              msg: `Your amount transfer Rp ${amount},00 Rupiah has been sent`,
+              dataCashUser: results[0].cash,
+              dataCashReceiver: receive[0].cash
+            }
+            res.send(data)
+          } else {
+            const data = {
+              success: false,
+              msg: 'Your access has been wrong input'
+            }
+            res.send(data)
+          }
         }
-        res.send(data)
       }
     } catch (err) {
       console.log(err)
     }
+  },
+  getHistory: async function (req, res) {
+    let { page, limit, search, sort } = req.query
+    page = parseInt(page) || 1
+    limit = parseInt(limit) || 5
+
+    let key = search && Object.keys(search)[0]
+    let value = search && Object.values(search)[0]
+    search = (search && { key, value }) || { key: 'name_transaction', value: '' }
+
+    key = sort && Object.keys(sort)[0]
+    value = sort && Object.values(sort)[0]
+    sort = (sort && { key, value }) || { key: 'created_at', value: 1 }
+    const conditions = { page, perPage: limit, search, sort }
+    const { idUser } = req.params
+    const results = await UserModel.getHistory(conditions, idUser)
+    const totalData = await UserModel.getAllHistory(conditions, idUser)
+    conditions.totalData = totalData.total
+    conditions.totalPage = Math.ceil(conditions.totalData / conditions.perPage)
+    conditions.nextLink =
+      page >= conditions.totalPage
+        ? null
+        : process.env.APP_URI.concat(`users?page=${page + 1}`)
+    conditions.prevLink =
+      page <= 1 ? null : process.env.APP_URI.concat(`users?page=${page - 1}`)
+    delete conditions.search
+    delete conditions.sort
+    delete conditions.limit
+
+    const data = {
+      success: true,
+      pageInfo: conditions,
+      data: results
+    }
+    res.send(data)
   }
+
+  //   const count = await UserModel.getAllHistory(idUser)
+  //   if (count.total === 0) {
+  //     const data = {
+  //       success: false,
+  //       msg: 'No data'
+  //     }
+  //     res.send(data)
+  //   } else {
+  //     const results = await UserModel.getHistory(idUser)
+  //     if (results) {
+  //       const data = {
+  //         success: true,
+  //         idUser: idUser,
+  //         data: results
+  //       }
+  //       res.send(data)
+  //     } else {
+  //       const data = {
+  //         success: false,
+  //         msg: 'There is no data for your request'
+  //       }
+  //       res.send(data)
+  //     }
+  //   }
+  // },
 }

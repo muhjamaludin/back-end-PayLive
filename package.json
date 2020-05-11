@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/audywp/back-end-PayLive#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -30,6 +31,7 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.3",
     "standard": "^14.3.3",
+    "twilio": "^3.42.2",
     "uuid": "^7.0.2"
   }
 }
